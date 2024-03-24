@@ -93,17 +93,37 @@ class Spotify_App():
                     uri_formatted = f"spotify:track:{uri}"
                 else:
                     uri_formatted = uri
+    # # this is being held up by not being able to create playlists
+    # def append_tracks_to_playlist(self, playlist_id, uris, duplicates=False):
+    #     if self.token_expired():
+    #         self.get_auth_token()
+    #     payload = {
+    #         "Authorization": f"Bearer {self.access_token}",
+    #         "scope": "playlist-modify-private",
+    #         "uris": []
+    #     }
+    #     for uri in uris:
+    #         if duplicates:
+    #             if uri.find("spotify:track:") == -1:
+    #                 payload["uris"].append(f"spotify:track:{uri}")
+    #             else:
+    #                 payload["uris"].append(uri)
+    #         else:
+    #             if uri.find("spotify:track:") == -1:
+    #                 uri_formatted = f"spotify:track:{uri}"
+    #             else:
+    #                 uri_formatted = uri
 
-                if uri_formatted not in self.get_uris(playlist_id):
-                    payload["uris"].append(uri_formatted)
-        print(payload)
-        r = requests.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", data=payload)
-        if r.status_code != 201:
-            print("##################################################")
-            print("This request has resulted in a unexpected response\nThe response status code was: " + str(r.status_code))
-            print("##################################################")
-        else:
-            return self.get_playlist_tracks(playlist_id)
+    #             if uri_formatted not in self.get_uris(playlist_id):
+    #                 payload["uris"].append(uri_formatted)
+    #     print(payload)
+    #     r = requests.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", data=payload)
+    #     if r.status_code != 201:
+    #         print("##################################################")
+    #         print("This request has resulted in a unexpected response\nThe response status code was: " + str(r.status_code))
+    #         print("##################################################")
+    #     else:
+    #         return self.get_playlist_tracks(playlist_id)
 
 
 first_app = Spotify_App("66768cc0e0fb4cc5a9ae5421aa6c399c", "644255b4d32e4644a3b25009a35b0dfb")
