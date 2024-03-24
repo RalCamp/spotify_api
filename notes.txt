@@ -1,0 +1,49 @@
+# Client ID
+66768cc0e0fb4cc5a9ae5421aa6c399c
+
+# Client 
+644255b4d32e4644a3b25009a35b0dfb
+
+# get auth token
+curl -X POST "https://accounts.spotify.com/api/token" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "grant_type=client_credentials&client_id=66768cc0e0fb4cc5a9ae5421aa6c399c&client_secret=644255b4d32e4644a3b25009a35b0dfb"
+# returns
+{"access_token":"BQAN9ber-I1aeniTyigDxXELNHv5OnZV79zDjlRQ3iZ6hmsXxclgrID9uOKIRzdeZXQ1lB-mCLNWkg3vojwDSY_noyb1KfTr4fbcOrWQ3NFl156SYoc","token_type":"Bearer","expires_in":3600}
+
+# an arbitrary artist url
+https://open.spotify.com/artist/31TPClRtHm23RisEBtV3X7?si=1WhO7jyMT5yUiDgpek8Okw
+
+# get artist information
+curl "https://api.spotify.com/v1/artists/31TPClRtHm23RisEBtV3X7?si=1WhO7jyMT5yUiDgpek8Okw" -H "Authorization: Bearer BQAN9ber-I1aeniTyigDxXELNHv5OnZV79zDjlRQ3iZ6hmsXxclgrID9uOKIRzdeZXQ1lB-mCLNWkg3vojwDSY_noyb1KfTr4fbcOrWQ3NFl156SYoc"
+
+# returns
+{
+  "external_urls" : {
+    "spotify" : "https://open.spotify.com/artist/31TPClRtHm23RisEBtV3X7"
+  },
+  "followers" : {
+    "href" : null,
+    "total" : 13754585
+  },
+  "genres" : [ "dance pop", "pop" ],
+  "href" : "https://api.spotify.com/v1/artists/31TPClRtHm23RisEBtV3X7",
+  "id" : "31TPClRtHm23RisEBtV3X7",
+  "images" : [ {
+    "height" : 640,
+    "url" : "https://i.scdn.co/image/ab6761610000e5eb7a5cfe2597665a3d160e805e",
+    "width" : 640
+  }, {
+    "height" : 320,
+    "url" : "https://i.scdn.co/image/ab676161000051747a5cfe2597665a3d160e805e",
+    "width" : 320
+  }, {
+    "height" : 160,
+    "url" : "https://i.scdn.co/image/ab6761610000f1787a5cfe2597665a3d160e805e",
+    "width" : 160
+  } ],
+  "name" : "Justin Timberlake",
+  "popularity" : 83,
+  "type" : "artist",
+  "uri" : "spotify:artist:31TPClRtHm23RisEBtV3X7"
+}

@@ -1,0 +1,88 @@
+{
+  "added_at": "2024-03-22T19:33:06Z", 
+  "added_by": {
+    "external_urls": {
+      "spotify": "https://open.spotify.com/user/gh1mummnvxjvoe7gl58ple9hd"
+      }, 
+      "href": "https://api.spotify.com/v1/users/gh1mummnvxjvoe7gl58ple9hd", 
+      "id": "gh1mummnvxjvoe7gl58ple9hd", 
+      "type": "user", 
+      "uri": "spotify:user:gh1mummnvxjvoe7gl58ple9hd"
+      }, 
+      "is_local": false, 
+      "primary_color": null, 
+      "track": {
+        "album": {
+          "album_type": "album", 
+          "artists": [ { 
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/31TPClRtHm23RisEBtV3X7"
+              }, 
+            "href": "https://api.spotify.com/v1/artists/31TPClRtHm23RisEBtV3X7", 
+            "id": "31TPClRtHm23RisEBtV3X7", 
+            "name": "Justin Timberlake", 
+            "type": "artist", 
+            "uri": "spotify:artist:31TPClRtHm23RisEBtV3X7"
+          } ], 
+          "available_markets": [ "AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "PR", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK" ],
+          "external_urls": {
+            "spotify": "https://open.spotify.com/album/6QPkyl04rXwTGlGlcYaRoW"
+            }, 
+          "href": "https://api.spotify.com/v1/albums/6QPkyl04rXwTGlGlcYaRoW", 
+          "id": "6QPkyl04rXwTGlGlcYaRoW", 
+          "images": [ { 
+            "height": 640, 
+            "url": "https://i.scdn.co/image/ab67616d0000b273346a5742374ab4cf9ed32dee", 
+            "width": 640
+          }, {
+            "height": 300, 
+            "url": "https://i.scdn.co/image/ab67616d00001e02346a5742374ab4cf9ed32dee", 
+            "width": 300
+          }, {
+            "height": 64, 
+            "url": "https://i.scdn.co/image/ab67616d00004851346a5742374ab4cf9ed32dee", 
+            "width": 64
+          } ], 
+          "name": "Justified", 
+          "release_date": "2002-11-04", 
+          "release_date_precision": "day", 
+          "total_tracks": 13, 
+          "type": "album", 
+          "uri": "spotify:album:6QPkyl04rXwTGlGlcYaRoW"
+        }, 
+        "artists": [ { 
+          "external_urls": { 
+            "spotify": "https://open.spotify.com/artist/31TPClRtHm23RisEBtV3X7"
+          }, 
+          "href": "https://api.spotify.com/v1/artists/31TPClRtHm23RisEBtV3X7", 
+          "id": "31TPClRtHm23RisEBtV3X7", 
+          "name": "Justin Timberlake", 
+          "type": "artist", 
+          "uri": "spotify:artist:31TPClRtHm23RisEBtV3X7"
+        } ], 
+        "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"], 
+        "disc_number": 1, 
+        "duration_ms": 267266, 
+        "episode": false, 
+        "explicit": false, 
+        "external_ids": {
+          "isrc": "USJI10200367"
+        }, 
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/1AWQoqb9bSvzTjaLralEkT"
+        }, 
+        "href": "https://api.spotify.com/v1/tracks/1AWQoqb9bSvzTjaLralEkT", 
+        "id": "1AWQoqb9bSvzTjaLralEkT", 
+        "is_local": false, 
+        "name": "Rock Your Body", 
+        "popularity": 81, 
+        "preview_url": "https://p.scdn.co/mp3-preview/a4cdd210220f23d31a2b5d113500ffc9af2cbe9d?cid=66768cc0e0fb4cc5a9ae5421aa6c399c", 
+        "track": true, 
+        "track_number": 6, 
+        "type": "track", 
+        "uri": "spotify:track:1AWQoqb9bSvzTjaLralEkT"
+      }, 
+      "video_thumbnail": {
+        "url": null
+      }
+}
