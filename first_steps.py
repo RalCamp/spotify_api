@@ -67,7 +67,7 @@ class Spotify_App():
             tracks.append(track)
         return tracks
     
-    def get_uris(self, playlist_id):
+    def get_playlist_uris(self, playlist_id):
         playlist = self.get_playlist(playlist_id)
         uris = []
         for item in playlist['tracks']['items']:
