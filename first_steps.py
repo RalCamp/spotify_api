@@ -41,6 +41,12 @@ class Spotify_App():
                 print("This request has resulted in a unexpected response\nThe response status code was: " + str(response))
                 print("##################################################")
 
+    def request_successful(self, response_object):
+        if response_object.status_code == 200:
+            return True
+        else:
+            return False
+
     def get_playlist(self, playlist_id):
         if self.token_expired():
             self.get_auth_token()
