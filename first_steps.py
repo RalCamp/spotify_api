@@ -22,20 +22,24 @@ class Spotify_App():
 
     def token_expired(self):
         expired = False
-        hdrs = {
-            "Authorization": f"Bearer {self.access_token}"
-        }
-        r = requests.get('https://api.spotify.com/v1/me', headers=hdrs)
-        response = r.status_code
-        if response == 401:
-            expired = True
-            return expired
-        elif response == 200:
+        if self.access_token == "":
+            self.get_auth_token()
             return expired
         else:
-            print("##################################################")
-            print("This request has resulted in a unexpected response\nThe response status code was: " + str(response))
-            print("##################################################")
+            hdrs = {
+                "Authorization": f"Bearer {self.access_token}"
+            }
+            r = requests.get('https://api.spotify.com/v1/me', headers=hdrs)
+            response = r.status_code
+            if response == 401:
+                expired = True
+                return expired
+            elif response == 200:
+                return expired
+            else:
+                print("##################################################")
+                print("This request has resulted in a unexpected response\nThe response status code was: " + str(response))
+                print("##################################################")
 
     def get_playlist(self, playlist_id):
         if self.token_expired():
