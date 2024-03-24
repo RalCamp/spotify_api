@@ -10,6 +10,17 @@ class Spotify_App():
         self.client_secret = client_secret
         self.access_token = access_token
 
+    def request_successful(self, response_object):
+        if response_object.status_code == 200:
+            return True
+        else:
+            return False
+        
+    def error_message(self, response_object):
+        print("##################################################")
+        print("This request has resulted in a unexpected response\nThe response status code was: " + str(response_object.status_code))
+        print("##################################################")
+
     def get_auth_token(self):
         payload = {
             "Content-Type": "application/x-www-form-urlencoded", 
@@ -30,20 +41,13 @@ class Spotify_App():
                 "Authorization": f"Bearer {self.access_token}"
             }
             r = requests.get('https://api.spotify.com/v1/me', headers=hdrs)
-            response = r.status_code
-            if response == 401:
+            if r.status_code == 401:
                 expired = True
                 return expired
-            elif response == 200:
+            elif self.request_successful(r):
                 return expired
             else:
-                print("##################################################")
-                print("This request has resulted in a unexpected response\nThe response status code was: " + str(response))
-                print("##################################################")
-
-    def request_successful(self, response_object):
-        if response_object.status_code == 200:
-            return True
+                self.error_message(r)
         else:
             return False
         
