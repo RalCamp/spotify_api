@@ -59,12 +59,10 @@ class Spotify_App():
             "Authorization": f"Bearer {self.access_token}"
         }
         r = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}", headers=hdrs)
-        if r.status_code != 200:
-            print("##################################################")
-            print("This request has resulted in a unexpected response\nThe response status code was: " + str(r.status_code))
-            print("##################################################")
-        else:
+        if self.request_successful(r):
             return r.json()
+        else:
+            self.error_message(r)
     
     def get_playlist_tracks(self, playlist_id):
         playlist = self.get_playlist(playlist_id)
