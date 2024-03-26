@@ -2,13 +2,70 @@
 
 # deps
 import requests
+import os
+import json
+import base64
 
 class Spotify_App():
 
-    def __init__(self, client_id, client_secret, access_token=""):
+    def __init__(self, name, client_id, client_secret, client_auth_token="", user_auth_code="", user_auth_token=""):
+        self.name = name
         self.client_id = client_id
         self.client_secret = client_secret
-        self.access_token = access_token
+        self.client_auth_token = client_auth_token
+        self.user_auth_code = user_auth_code
+        self.user_auth_token = user_auth_token
+        if not os.path.isfile(f"app_info/{self.name}.json"):
+            with open(f"app_info/{self.name}.json", 'w') as file:
+                template = { 
+                    "client_id": self.client_id, 
+                    "client_secret": self.client_secret, 
+                    "client_auth_token": self.client_auth_token, 
+                    "user_auth_code": self.user_auth_code, 
+                    "user_auth_token": self.user_auth_token
+                }
+                json_object = json.dumps(template, indent=4)
+                file.write(json_object)
+        else:
+            with open(f"app_info/{self.name}.json", 'r') as file:
+                read_dict = json.loads(file.read())
+            print(read_dict)
+            write_dict = { "client_id": self.client_id, "client_secret": self.client_secret, "client_auth_token": self.client_auth_token, "user_auth_code": self.user_auth_code, "user_auth_token": self.user_auth_token}
+            print(write_dict)
+            for key in write_dict:
+                if key not in read_dict.keys():
+                    read_dict[key] = write_dict[key]
+                elif key in read_dict and read_dict[key] == "":
+                    read_dict[key] = write_dict[key]
+                write_json = json.dumps(read_dict, indent=4)
+            with open(f"app_info/{self.name}.json", 'w') as file:
+                file.write(write_json)
+
+    def read_client_auth_token(self):
+        with open(f"app_info/{self.name}.json", 'r') as file:
+            read_dict = json.loads(file.read())
+        self.client_auth_token = read_dict["client_auth_token"]
+
+    def read_user_auth_token(self):
+        with open(f"app_info/{self.name}.json", 'r') as file:
+            read_dict = json.loads(file.read())
+        self.user_auth_token = read_dict["user_auth_token"]
+
+    def write_client_auth_token(self):
+        with open(f"app_info/{self.name}.json", 'r') as file:
+            read_dict = json.loads(file.read())
+        read_dict["client_auth_token"] = self.client_auth_token
+        write_json = json.dumps(read_dict, indent=4)
+        with open(f"app_info/{self.name}.json", 'w') as file:
+            file.write(write_json)
+
+    def write_user_auth_token(self):
+        with open(f"app_info/{self.name}.json", 'r') as file:
+            read_dict = json.loads(file.read())    
+        read_dict["user_auth_token"] = self.user_auth_token
+        write_json = json.dumps(read_dict, indent=4)
+        with open(f"app_info/{self.name}.json", 'w') as file:
+            file.write(write_json)
 
     def request_successful(self, response_object):
         if response_object.status_code == 200:
