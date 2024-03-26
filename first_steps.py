@@ -78,7 +78,7 @@ class Spotify_App():
         print("This request has resulted in a unexpected response\nThe response status code was: " + str(response_object.status_code))
         print("##################################################")
 
-    def get_auth_token(self):
+    def get_client_auth_token(self):
         payload = {
             "Content-Type": "application/x-www-form-urlencoded", 
             "grant_type": "client_credentials",
@@ -86,18 +86,40 @@ class Spotify_App():
             "client_secret": self.client_secret
             }
         r = requests.post('https://accounts.spotify.com/api/token', data=payload)
-        self.access_token = r.json()['access_token']
+        self.client_auth_token = r.json()['access_token']
+        self.write_client_auth_token()
+        return r.json()
+    
+    def get_user_auth_token(self):
+        encoded_credentials = base64.b64encode(self.client_id.encode() + b':' + self.client_secret.encode()).decode("utf-8")
+        token_headers = {
+            "Authorization": "Basic " + encoded_credentials,
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+        token_data = {
+            "grant_type": "authorization_code",
+            "code": self.user_auth_code,
+            "redirect_uri": "http://localhost:7777/callback"
+        }
+        r = requests.post("https://accounts.spotify.com/api/token", data=token_data, headers=token_headers)
+        if self.request_successful(r):
+            self.user_auth_token = r.json()["access_token"]
+            self.write_user_auth_token()
+            return r.json()
+        else:
+            self.error_message(r)
 
-    def token_expired(self):
+    def client_token_expired(self):
         expired = False
-        if self.access_token == "":
-            self.get_auth_token()
+        self.read_client_auth_token()
+        if self.client_auth_token == "":
+            self.get_client_auth_token()
             return expired
         else:
             hdrs = {
-                "Authorization": f"Bearer {self.access_token}"
+                "Authorization": f"Bearer {self.client_auth_token}"
             }
-            r = requests.get('https://api.spotify.com/v1/me', headers=hdrs)
+            r = requests.get("https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n", headers=hdrs)
             if r.status_code == 401:
                 expired = True
                 return expired
@@ -105,19 +127,28 @@ class Spotify_App():
                 return expired
             else:
                 self.error_message(r)
+    
+    def get_user_info(self):
+        self.read_client_auth_token
+        if self.client_token_expired():
+            self.get_client_auth_token()
+
+        hdrs = {
+            "Authorization": f"Bearer {self.client_auth_token}",
+            "scope": "user-read-private"
+        }
+        r = requests.get('https://api.spotify.com/v1/me', headers=hdrs)
+        if self.request_successful(r):
+            return r.json()
         else:
-            return False
-        
-    def error_message(self, response_object):
-        print("##################################################")
-        print("This request has resulted in a unexpected response\nThe response status code was: " + str(response_object.status_code))
-        print("##################################################")
+            self.error_message(r)
 
     def get_playlist(self, playlist_id):
-        if self.token_expired():
-            self.get_auth_token()
+        if self.client_token_expired():
+            self.get_client_auth_token()
+
         hdrs = {
-            "Authorization": f"Bearer {self.access_token}"
+            "Authorization": f"Bearer {self.client_auth_token}"
         }
         r = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}", headers=hdrs)
         if self.request_successful(r):
@@ -142,33 +173,14 @@ class Spotify_App():
         uris = []
         for item in playlist['tracks']['items']:
             uris.append(item['track']['uri'])
-        return uris
-    
-    def append_tracks_to_playlist(self, playlist_id, uris, duplicates=False):
-        if self.token_expired():
-            self.get_auth_token()
-        payload = {
-            "Authorization": f"Bearer {self.access_token}",
-            "scope": "playlist-modify-private",
-            "uris": []
-        }
-        for uri in uris:
-            if duplicates:
-                if uri.find("spotify:track:") == -1:
-                    payload["uris"].append(f"spotify:track:{uri}")
-                else:
-                    payload["uris"].append(uri)
-            else:
-                if uri.find("spotify:track:") == -1:
-                    uri_formatted = f"spotify:track:{uri}"
-                else:
-                    uri_formatted = uri
+        return uris 
+        
     # # this is being held up by not being able to create playlists
     # def append_tracks_to_playlist(self, playlist_id, uris, duplicates=False):
-    #     if self.token_expired():
-    #         self.get_auth_token()
+    #     if self.client_token_expired():
+    #         self.get_client_auth_token()
     #     payload = {
-    #         "Authorization": f"Bearer {self.access_token}",
+    #         "Authorization": f"Bearer {self.client_auth_token}",
     #         "scope": "playlist-modify-private",
     #         "uris": []
     #     }
