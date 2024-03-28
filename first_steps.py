@@ -8,13 +8,14 @@ import base64
 
 class Spotify_App():
 
-    def __init__(self, name, client_id, client_secret, client_auth_token="", user_auth_code="", user_auth_token=""):
+    def __init__(self, name, client_id, client_secret, client_auth_token="", user_auth_code="", user_auth_token="", user_refresh_token=""):
         self.name = name
         self.client_id = client_id
         self.client_secret = client_secret
         self.client_auth_token = client_auth_token
         self.user_auth_code = user_auth_code
         self.user_auth_token = user_auth_token
+        self.user_refresh_token = user_refresh_token
         if not os.path.isfile(f"app_info/{self.name}.json"):
             with open(f"app_info/{self.name}.json", 'w') as file:
                 template = { 
@@ -22,7 +23,8 @@ class Spotify_App():
                     "client_secret": self.client_secret, 
                     "client_auth_token": self.client_auth_token, 
                     "user_auth_code": self.user_auth_code, 
-                    "user_auth_token": self.user_auth_token
+                    "user_auth_token": self.user_auth_token,
+                    "user_refresh_token": self.user_refresh_token
                 }
                 json_object = json.dumps(template, indent=4)
                 file.write(json_object)
@@ -51,6 +53,11 @@ class Spotify_App():
             read_dict = json.loads(file.read())
         self.user_auth_token = read_dict["user_auth_token"]
 
+    def read_user_refresh_token(self):
+        with open(f"app_info/{self.name}.json", 'r') as file:
+            read_dict = json.loads(file.read())
+        self.user_refresh_token = read_dict["user_refresh_token"]
+
     def write_client_auth_token(self):
         with open(f"app_info/{self.name}.json", 'r') as file:
             read_dict = json.loads(file.read())
@@ -63,6 +70,14 @@ class Spotify_App():
         with open(f"app_info/{self.name}.json", 'r') as file:
             read_dict = json.loads(file.read())    
         read_dict["user_auth_token"] = self.user_auth_token
+        write_json = json.dumps(read_dict, indent=4)
+        with open(f"app_info/{self.name}.json", 'w') as file:
+            file.write(write_json)
+
+    def write_user_refresh_token(self):
+        with open(f"app_info/{self.name}.json", 'r') as file:
+            read_dict = json.loads(file.read())    
+        read_dict["user_refresh_token"] = self.user_refresh_token
         write_json = json.dumps(read_dict, indent=4)
         with open(f"app_info/{self.name}.json", 'w') as file:
             file.write(write_json)
@@ -90,24 +105,25 @@ class Spotify_App():
         self.write_client_auth_token()
         return r.json()
     
-    def get_user_auth_token(self):
-        encoded_credentials = base64.b64encode(self.client_id.encode() + b':' + self.client_secret.encode()).decode("utf-8")
-        token_headers = {
-            "Authorization": "Basic " + encoded_credentials,
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-        token_data = {
-            "grant_type": "authorization_code",
-            "code": self.user_auth_code,
-            "redirect_uri": "http://localhost:7777/callback"
-        }
-        r = requests.post("https://accounts.spotify.com/api/token", data=token_data, headers=token_headers)
-        if self.request_successful(r):
-            self.user_auth_token = r.json()["access_token"]
-            self.write_user_auth_token()
-            return r.json()
-        else:
-            self.error_message(r)
+    # this has been done via postman
+    # def get_user_auth_token(self):
+    #     encoded_credentials = base64.b64encode(self.client_id.encode() + b':' + self.client_secret.encode()).decode("utf-8")
+    #     token_headers = {
+    #         "Authorization": "Basic " + encoded_credentials,
+    #         "Content-Type": "application/x-www-form-urlencoded"
+    #     }
+    #     token_params = {
+    #         "grant_type": "authorization_code",
+    #         "code": self.user_auth_code,
+    #         "redirect_uri": "http://localhost:7777/callback"
+    #     }
+    #     r = requests.post("https://accounts.spotify.com/api/token", params=token_params, headers=token_headers)
+    #     if self.request_successful(r):
+    #         self.user_auth_token = r.json()["access_token"]
+    #         self.write_user_auth_token()
+    #         return r.json()
+    #     else:
+    #         self.error_message(r)
 
     def client_token_expired(self):
         expired = False
@@ -127,14 +143,64 @@ class Spotify_App():
                 return expired
             else:
                 self.error_message(r)
+
+    def user_auth_token_expired(self):
+        self.read_user_auth_token()
+        hdrs = {
+            "Authorization": f"Bearer {self.user_auth_token}",
+            "scope": "user-read-private"
+        }
+        r = requests.get('https://api.spotify.com/v1/me', headers=hdrs)
+        if r.status_code == 401:
+            return True
+        elif self.request_successful(r):
+            return False
+        else:
+            self.error_message(r)
+        
+    def get_user_refresh_token(self):
+        encoded_credentials = base64.b64encode(self.client_id.encode() + b':' + self.client_secret.encode()).decode("utf-8")
+        prms = {
+            "grant_type": "refresh_token",
+            "refresh_token": self.user_refresh_token
+        }
+        hdrs = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": encoded_credentials
+        }
+        r = requests.post("https://accounts.spotify.com/api/token", params=prms, headers=hdrs)
+        if self.request_successful(r):
+            self.user_refresh_token = r.json()['refresh_token']
+            self.write_user_refresh_token()
+            return r.json()
+        else:
+            self.error_message()
+
+    def user_auth_token_from_refresh_token(self):
+        self.read_user_refresh_token()
+        encoded_credentials = base64.b64encode(self.client_id.encode() + b':' + self.client_secret.encode()).decode("utf-8")
+        token_headers = {
+            "Authorization": "Basic " + encoded_credentials,
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+        token_params = {
+            "grant_type": "refresh_token",
+            "refresh_token": self.user_refresh_token
+        }
+        r = requests.post("https://accounts.spotify.com/api/token", params=token_params, headers=token_headers)
+        if self.request_successful(r):
+            self.user_auth_token = r.json()["access_token"]
+            self.write_user_auth_token()
+            return r.json()
+        else:
+            self.error_message(r)
     
     def get_user_info(self):
-        self.read_client_auth_token
-        if self.client_token_expired():
-            self.get_client_auth_token()
-
+        self.read_user_auth_token
+        if self.user_auth_token_expired():
+            self.user_auth_token_from_refresh_token()
         hdrs = {
-            "Authorization": f"Bearer {self.client_auth_token}",
+            "Authorization": f"Bearer {self.user_auth_token}",
             "scope": "user-read-private"
         }
         r = requests.get('https://api.spotify.com/v1/me', headers=hdrs)
