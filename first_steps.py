@@ -31,9 +31,7 @@ class Spotify_App():
         else:
             with open(f"app_info/{self.name}.json", 'r') as file:
                 read_dict = json.loads(file.read())
-            print(read_dict)
             write_dict = { "client_id": self.client_id, "client_secret": self.client_secret, "client_auth_token": self.client_auth_token, "user_auth_code": self.user_auth_code, "user_auth_token": self.user_auth_token}
-            print(write_dict)
             for key in write_dict:
                 if key not in read_dict.keys():
                     read_dict[key] = write_dict[key]
@@ -126,21 +124,19 @@ class Spotify_App():
     #         self.error_message(r)
 
     def client_token_expired(self):
-        expired = False
         self.read_client_auth_token()
         if self.client_auth_token == "":
             self.get_client_auth_token()
-            return expired
+            return False
         else:
             hdrs = {
                 "Authorization": f"Bearer {self.client_auth_token}"
             }
             r = requests.get("https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n", headers=hdrs)
             if r.status_code == 401:
-                expired = True
-                return expired
+                return True
             elif self.request_successful(r):
-                return expired
+                return False
             else:
                 self.error_message(r)
 
