@@ -81,7 +81,7 @@ class Spotify_App():
             file.write(write_json)
 
     def request_successful(self, response_object):
-        if response_object.status_code == 200:
+        if response_object.status_code == 200 or response_object.status_code == 201:
             return True
         else:
             return False
@@ -89,6 +89,7 @@ class Spotify_App():
     def error_message(self, response_object):
         print("##################################################")
         print("This request has resulted in a unexpected response\nThe response status code was: " + str(response_object.status_code))
+        print(response_object.json()["error"]["message"])
         print("##################################################")
 
     def get_client_auth_token(self):
