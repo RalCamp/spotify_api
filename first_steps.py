@@ -209,7 +209,6 @@ class Spotify_App():
     def get_playlist(self, playlist_id):
         if self.client_token_expired():
             self.get_client_auth_token()
-
         hdrs = {
             "Authorization": f"Bearer {self.client_auth_token}"
         }
