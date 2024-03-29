@@ -236,6 +236,30 @@ class Spotify_App():
         for item in playlist['tracks']['items']:
             uris.append(item['track']['uri'])
         return uris 
+    
+    def create_playlist(self, name, public=False, collaborative=False, description=""):
+        self.read_user_auth_token
+        if self.user_auth_token_expired():
+            self.user_auth_token_from_refresh_token()
+        user_id = self.get_user_info()["id"]
+        print(user_id)
+        user_endpoint = f"https://api.spotify.com/v1/users/{user_id}/playlists"
+        hdrs = {
+            "Authorization": f"Bearer {self.user_auth_token}",
+            # "Content-Type": "application/json",
+            # "scope": "playlist-modify-private playlist-modify-public"
+        }
+        payload = json.dumps({
+            "name": name,
+            "public": public,
+            "collaborative": collaborative,
+            "description": description
+        })
+        r = requests.post(user_endpoint, headers=hdrs, data=payload)
+        if self.request_successful(r):
+            return r.json()
+        else:
+            self.error_message(r)
         
     # # this is being held up by not being able to create playlists
     # def append_tracks_to_playlist(self, playlist_id, uris, duplicates=False):
