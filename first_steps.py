@@ -265,11 +265,11 @@ class Spotify_App():
             tracks.append(track)
         return tracks     
     
-    def get_playlist_uris(self, playlist_id):
-        playlist = self.get_playlist(playlist_id)
+    def get_playlist_track_uris(self, playlist_id):
+        playlist_tracks = self.get_playlist_tracks(playlist_id)
         uris = []
-        for item in playlist['tracks']['items']:
-            uris.append(item['track']['uri'])
+        for track in playlist_tracks:
+            uris.append(track['uri'])
         return uris 
     
     def create_playlist(self, name, public=False, collaborative=False, description=""):
