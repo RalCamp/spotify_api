@@ -254,12 +254,9 @@ class Spotify_App():
         if self.user_auth_token_expired():
             self.user_auth_token_from_refresh_token()
         user_id = self.get_user_info()["id"]
-        print(user_id)
         user_endpoint = f"https://api.spotify.com/v1/users/{user_id}/playlists"
         hdrs = {
-            "Authorization": f"Bearer {self.user_auth_token}",
-            # "Content-Type": "application/json",
-            # "scope": "playlist-modify-private playlist-modify-public"
+            "Authorization": f"Bearer {self.user_auth_token}"
         }
         payload = json.dumps({
             "name": name,
@@ -269,6 +266,25 @@ class Spotify_App():
         })
         r = requests.post(user_endpoint, headers=hdrs, data=payload)
         if self.request_successful(r):
+            if not os.path.isfile(f"app_info/created_playlists_{self.name}.json"):
+                with open(f"app_info/created_playlists_{self.name}.json", "w") as file:
+                    request_return = r.json()
+                    item = {
+                        request_return["id"]: {
+                            "name": request_return["name"]
+                        }
+                    }
+                    item_json = json.dumps(item, indent=4)
+                    file.write(item_json)
+            else: 
+                with open(f"app_info/created_playlists_{self.name}.json", "r") as file:
+                    playlists_dict = json.loads(file.read())
+                request_return = r.json()
+                if request_return["id"] not in playlists_dict.keys():
+                    playlists_dict[request_return["id"]] = {"name": request_return["name"]}
+                    playlists_json = json.dumps(playlists_dict, indent=4)
+                    with open(f"app_info/created_playlists_{self.name}.json", "w") as file:
+                        file.write(playlists_json)
             return r.json()
         else:
             self.error_message(r)
