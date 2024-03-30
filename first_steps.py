@@ -320,6 +320,16 @@ class Spotify_App():
     #         print("##################################################")
     #     else:
     #         return self.get_playlist_tracks(playlist_id)
+    def created_playlist_cleanup(self):
+        with open(f"app_info/created_playlists_{self.name}.json", "r") as file:
+            playlists_dict = json.loads(file.read())
+        for id in playlists_dict.keys():
+            if not self.playlist_exist(id):
+                playlists_dict.pop(id)
+        playlists_json = json.dumps(playlists_dict, indent=4)
+        with open(f"app_info/created_playlists_{self.name}.json", "w") as file:
+            file.write(playlists_json)
+        return playlists_json
 
 
 first_app = Spotify_App("66768cc0e0fb4cc5a9ae5421aa6c399c", "644255b4d32e4644a3b25009a35b0dfb")
