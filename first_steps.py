@@ -217,6 +217,18 @@ class Spotify_App():
             return r.json()
         else:
             self.error_message(r)
+
+    def playlist_exist(self, playlist_id):
+        if self.client_token_expired():
+            self.get_client_auth_token()
+        hdrs = {
+            "Authorization": f"Bearer {self.client_auth_token}"
+        }
+        r = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}", headers=hdrs)
+        if self.request_successful(r):
+            return True
+        else:
+            return False
     
     def get_playlist_tracks(self, playlist_id):
         playlist = self.get_playlist(playlist_id)
