@@ -232,16 +232,38 @@ class Spotify_App():
             return False
     
     def get_playlist_tracks(self, playlist_id):
-        playlist = self.get_playlist(playlist_id)
+        if self.client_token_expired():
+            self.get_client_auth_token()
+        hdrs = {
+            "Authorization": f"Bearer {self.client_auth_token}"
+        }
+        r = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?limit=100", headers=hdrs)
+        if not self.request_successful(r):
+            self.error_message(r)  
+            return None
+        playlist = r.json()
         tracks = []
-        for item in playlist['tracks']['items']:
+        while playlist["next"] != None:
+            for item in playlist['items']:
+                track = {}
+                track['name'] = item['track']['name']
+                track['uri'] = item['track']['uri']
+                track['artists'] = [ artist['name'] for artist in item['track']['artists']]
+                track['album'] = item['track']['album']['name']
+                tracks.append(track)
+            r = requests.get(playlist["next"], headers=hdrs)
+            if not self.request_successful(r):
+                self.error_message(r)  
+                return None
+            playlist = r.json()
+        for item in playlist['items']:
             track = {}
             track['name'] = item['track']['name']
             track['uri'] = item['track']['uri']
             track['artists'] = [ artist['name'] for artist in item['track']['artists']]
             track['album'] = item['track']['album']['name']
             tracks.append(track)
-        return tracks
+        return tracks     
     
     def get_playlist_uris(self, playlist_id):
         playlist = self.get_playlist(playlist_id)
