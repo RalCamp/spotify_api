@@ -363,7 +363,6 @@ class Spotify_App():
                 self.error_message(r)
         else:
             slices = math.ceil(len(tracks_to_append) / 100)
-            print(slices)
             for n in range(1, (slices)):
                 lower_slice = 0 + (100 * (n - 1))
                 upper_slice = 100 + (100 * (n - 1))
