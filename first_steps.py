@@ -368,7 +368,8 @@ class Spotify_App():
                     "scope": "playlist-modify-private",
                     "uris": tracks_to_append[lower_slice:upper_slice]
                 }
-                r = requests.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload)
+                payload_json = json.dumps(payload)
+                r = requests.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload_json)
                 if self.request_successful(r):
                     return r.json()
                 else:
