@@ -1,5 +1,3 @@
-# get an auth token, use that token to get a json of artist information for Justin Timberlake
-
 # deps
 import requests
 import os
