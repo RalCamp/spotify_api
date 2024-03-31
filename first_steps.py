@@ -342,7 +342,7 @@ class Spotify_App():
                 else:
                     uri_formatted = uri
 
-                if uri_formatted not in self.get_playlist_uris(playlist_id):
+                if uri_formatted not in self.get_playlist_track_uris(playlist_id):
                     tracks_to_append.append(uri_formatted)
         # you can only add 100 items per request https://developer.spotify.com/documentation/web-api/reference/add-tracks-to-playlist
         if len(tracks_to_append) == 0:
