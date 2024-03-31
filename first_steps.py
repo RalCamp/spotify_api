@@ -383,6 +383,23 @@ class Spotify_App():
                 return r.json()
             else:
                 self.error_message(r)
+
+    def append_playlists_to_playlist(self, playlist, playlists_to_append, duplicates=False, track=False):
+        tracks_to_append = []
+        if duplicates == False:
+            playlist_tracks = self.get_playlist_track_uris(playlist)
+            for playlist_to_append in playlists_to_append:
+                uris = self.get_playlist_track_uris(playlist_to_append)
+                for uri in uris:
+                    if uri not in playlist_tracks and uri not in tracks_to_append:
+                        tracks_to_append.append(uri)
+        else:
+            for playlist_to_append in playlists_to_append:
+                uris = self.get_playlist_track_uris(playlist_to_append)
+                for uri in uris:
+                    tracks_to_append.append(uri)
+        self.append_tracks_to_playlist(playlist, tracks_to_append, duplicates=duplicates)
+
                 
 
 
