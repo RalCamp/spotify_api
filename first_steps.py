@@ -364,6 +364,7 @@ class Spotify_App():
         else:
             slices = math.ceil(len(tracks_to_append) / 100)
             for n in range(1, (slices)):
+                print(f"Adding tracks (operation {n} of {slices})...")
                 time.sleep(3)
                 lower_slice = 0 + (100 * (n - 1))
                 upper_slice = 100 + (100 * (n - 1))
@@ -377,6 +378,7 @@ class Spotify_App():
                     return r.json()
                 else:
                     self.error_message(r)
+            print(f"Adding tracks (operation {slices} of {slices})...")
             final_lower = 100 * (slices - 1)
             payload = {
                 "uris": tracks_to_append[final_lower::]
@@ -389,9 +391,11 @@ class Spotify_App():
 
     def append_playlists_to_playlist(self, playlist, playlists_to_append, duplicates=False, track=False):
         tracks_to_append = []
+        print("Collecting tracks to add...")
         if duplicates == False:
             playlist_tracks = self.get_playlist_track_uris(playlist)
             for playlist_to_append in playlists_to_append:
+                print("Getting playlist information...")
                 time.sleep(3)
                 uris = self.get_playlist_track_uris(playlist_to_append)
                 for uri in uris:
@@ -399,11 +403,20 @@ class Spotify_App():
                         tracks_to_append.append(uri)
         else:
             for playlist_to_append in playlists_to_append:
+                print("Getting playlist information...")
                 time.sleep(3)
                 uris = self.get_playlist_track_uris(playlist_to_append)
                 for uri in uris:
                     tracks_to_append.append(uri)
         self.append_tracks_to_playlist(playlist, tracks_to_append, duplicates=duplicates)
+        if tracks_to_append == []:
+            print("#########################################################")
+            print("After removing duplicates there are no tracks left to add")
+            print("#########################################################")
+            return None
+        print(f"Adding {str(len(tracks_to_append))} tracks...")
+        # we've already dealt with potential duplicates here, so we don't need to do it again
+        self.append_tracks_to_playlist(playlist, tracks_to_append, duplicates=True)
 
                 
 
