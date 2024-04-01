@@ -389,7 +389,7 @@ class Spotify_App():
             else:
                 self.error_message(r)
 
-    def append_playlists_to_playlist(self, playlist, playlists_to_append, duplicates=False, track=False):
+    def append_playlists_to_playlist(self, playlist, playlists_to_append, duplicates=False, log_added_tracks=False):
         tracks_to_append = []
         print("Collecting tracks to add...")
         if duplicates == False:
