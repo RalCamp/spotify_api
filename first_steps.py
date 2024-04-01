@@ -4,6 +4,7 @@ import os
 import json
 import base64
 import math
+import time
 
 class Spotify_App():
 
@@ -249,6 +250,7 @@ class Spotify_App():
                 track['artists'] = [ artist['name'] for artist in item['track']['artists']]
                 track['album'] = item['track']['album']['name']
                 tracks.append(track)
+            time.sleep(3)
             r = requests.get(playlist["next"], headers=hdrs)
             if not self.request_successful(r):
                 self.error_message(r)  
@@ -362,6 +364,7 @@ class Spotify_App():
         else:
             slices = math.ceil(len(tracks_to_append) / 100)
             for n in range(1, (slices)):
+                time.sleep(3)
                 lower_slice = 0 + (100 * (n - 1))
                 upper_slice = 100 + (100 * (n - 1))
                 payload = {
@@ -389,12 +392,14 @@ class Spotify_App():
         if duplicates == False:
             playlist_tracks = self.get_playlist_track_uris(playlist)
             for playlist_to_append in playlists_to_append:
+                time.sleep(3)
                 uris = self.get_playlist_track_uris(playlist_to_append)
                 for uri in uris:
                     if uri not in playlist_tracks and uri not in tracks_to_append:
                         tracks_to_append.append(uri)
         else:
             for playlist_to_append in playlists_to_append:
+                time.sleep(3)
                 uris = self.get_playlist_track_uris(playlist_to_append)
                 for uri in uris:
                     tracks_to_append.append(uri)
