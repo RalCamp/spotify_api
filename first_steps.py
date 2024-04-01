@@ -376,9 +376,7 @@ class Spotify_App():
                 }
                 payload_json = json.dumps(payload)
                 r = requests.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload_json)
-                if self.request_successful(r):
-                    return r.json()
-                else:
+                if not self.request_successful(r):
                     self.error_message(r)
             print(f"Adding tracks (operation {slices} of {slices})...")
             final_lower = 100 * (slices - 1)
@@ -386,10 +384,6 @@ class Spotify_App():
                 "uris": tracks_to_append[final_lower::]
             }
             r = requests.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload)
-            if self.request_successful(r):
-                return r.json()
-            else:
-                self.error_message(r)
 
     def append_playlists_to_playlist(self, playlist, playlists_to_append, duplicates=False, log_added_tracks=False):
         tracks_to_append = []
