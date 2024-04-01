@@ -90,6 +90,8 @@ class Spotify_App():
         print("##################################################")
         print("This request has resulted in a unexpected response\nThe response status code was: " + str(response_object.status_code))
         print(response_object.json()["error"]["message"])
+        if response_object.status_code == 429:
+            print(response_object.headers)
         print("##################################################")
 
     def get_client_auth_token(self):
