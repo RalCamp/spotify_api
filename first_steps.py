@@ -408,7 +408,21 @@ class Spotify_App():
                 uris = self.get_playlist_track_uris(playlist_to_append)
                 for uri in uris:
                     tracks_to_append.append(uri)
-        self.append_tracks_to_playlist(playlist, tracks_to_append, duplicates=duplicates)
+        if log_added_tracks == True:
+            if not os.path.isfile(f"app_info/{playlist}_added_tracks.json"):
+                with open(f"app_info/{playlist}_added_tracks.json", 'w') as file:
+                    file.write(json.dumps(tracks_to_append))
+            else:
+                with open(f"app_info/{playlist}_added_tracks.json", 'r') as file:
+                    added_tracks = json.loads(file.read())
+                for track in added_tracks:
+                    if track in tracks_to_append:
+                        tracks_to_append.remove(track)
+                for track in tracks_to_append:
+                    added_tracks.append(track)
+                print("Logging added tracks...")
+                with open(f"app_info/{playlist}_added_tracks.json", 'w') as file:
+                    file.write(json.dumps(tracks_to_append)) 
         if tracks_to_append == []:
             print("#########################################################")
             print("After removing duplicates there are no tracks left to add")
