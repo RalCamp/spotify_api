@@ -382,9 +382,11 @@ class Spotify_App():
             final_lower = 100 * (slices - 1)
             if final_lower != []:
                 payload = {
+                    "scope": "playlist-modify-private",
                     "uris": tracks_to_append[final_lower::]
                 }
-                r = requests.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload)
+                payload_json = json.dumps(payload)
+                r = requests.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload_json)
                 if not self.request_successful(r):
                     self.error_message(r)
             print("Tracks added")
