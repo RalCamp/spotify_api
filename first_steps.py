@@ -424,10 +424,10 @@ class Spotify_App():
                 if tracks_to_append != []:
                     for track in tracks_to_append:
                         added_tracks.append(track)
-                print("Logging added tracks...")
-                added_tracks_json = json.dumps(added_tracks, indent=4)
-                with open(f"app_info/{playlist}_added_tracks.json", 'w') as file:
-                    file.write(added_tracks_json)
+                    print("Logging added tracks...")
+                    added_tracks_json = json.dumps(added_tracks, indent=4)
+                    with open(f"app_info/{playlist}_added_tracks.json", 'w') as file:
+                        file.write(added_tracks_json)
         if tracks_to_append == []:
             print("#########################################################")
             print("After removing duplicates there are no tracks left to add")
