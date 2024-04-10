@@ -435,9 +435,9 @@ class Spotify_App():
         if tracks_to_append == []:
             print("#########################################################")
             print("After removing duplicates there are no tracks left to add")
-            print("#########################################################")
+            print("#########################################################\n")
             return None
-        print(f"Adding {str(len(tracks_to_append))} tracks...")
+        print(f"Adding {str(len(tracks_to_append))} tracks...\n")
         # we've already dealt with potential duplicates here, so we don't need to do it again
         self.append_tracks_to_playlist(playlist, tracks_to_append, duplicates=True)
 
