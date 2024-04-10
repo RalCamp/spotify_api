@@ -393,11 +393,14 @@ class Spotify_App():
 
     def append_playlists_to_playlist(self, playlist, playlists_to_append, duplicates=False, log_added_tracks=False):
         tracks_to_append = []
-        print("Collecting tracks to add...")
+        playlist_name = self.get_playlist(playlist)['name']
+        print(f"Collecting tracks to add to {playlist_name}...")
         if duplicates == False:
+            print(f"Getting current tracks from {playlist_name}...")
             playlist_tracks = self.get_playlist_track_uris(playlist)
             for playlist_to_append in playlists_to_append:
-                print("Getting playlist information...")
+                playlist_name = self.get_playlist(playlist_to_append)['name']
+                print(f"Getting tracks from {playlist_name}...")
                 time.sleep(3)
                 uris = self.get_playlist_track_uris(playlist_to_append)
                 for uri in uris:
@@ -405,7 +408,8 @@ class Spotify_App():
                         tracks_to_append.append(uri)
         else:
             for playlist_to_append in playlists_to_append:
-                print("Getting playlist information...")
+                playlist_name = self.get_playlist(playlist_to_append)['name']
+                print(f"Getting tracks from {playlist_name}...")
                 time.sleep(3)
                 uris = self.get_playlist_track_uris(playlist_to_append)
                 for uri in uris:
