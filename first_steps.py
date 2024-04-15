@@ -404,6 +404,70 @@ class Spotify_App():
                 else:
                     print("Tracks added\n")
 
+    def remove_tracks_from_playlist(self, playlist_id, tracks_to_remove):
+        self.read_user_auth_token
+        if self.user_auth_token_expired():
+            self.user_auth_token_from_refresh_token()
+        hdrs = {
+            "Authorization": f"Bearer {self.user_auth_token}",
+            "Content-Type": "application/json"
+        }
+        playlist_name = self.get_playlist(playlist_id)['name']
+        print(f"Removing tracks from {playlist_name}...")
+        print(f"Getting current tracks from {playlist_name}...")
+        tracks_in_playlist = self.get_playlist_track_uris(playlist_id)
+        print("Checking format of supplied tracks...")
+        tracks_to_remove_formatted = []
+        for track in tracks_to_remove:
+            if track.find("spotify:track:") == -1:
+                track = "spotify:track:" + track
+            if track in tracks_in_playlist:
+                item_to_add = {}
+                item_to_add['uri'] = track
+                tracks_to_remove_formatted.append(item_to_add)
+        tracks_to_remove = tracks_to_remove_formatted
+        if len(tracks_to_remove) == 0:
+            print("#####################################################################################")
+            print(f"None of these tracks are in {playlist_name}")
+            print("#####################################################################################/n")
+        elif len(tracks_to_remove) <= 100:
+            payload = {
+                "tracks": tracks_to_remove
+            }
+            payload_json = json.dumps(payload)
+            print("Removing tracks...")
+            r = requests.delete(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload_json)
+            if self.request_successful(r):
+                print("Tracks removed\n")
+                return r.json()
+            else:
+                self.error_message(r)
+        else:
+            slices = math.ceil(len(tracks_to_remove) / 100)
+            for n in range(1, (slices)):
+                print(f"Removing tracks (operation {n} of {slices})...")
+                time.sleep(3)
+                lower_slice = 0 + (100 * (n - 1))
+                upper_slice = 100 + (100 * (n - 1))
+                payload = {
+                    "tracks": tracks_to_remove[lower_slice:upper_slice]
+                }
+                payload_json = json.dumps(payload)
+                r = requests.delete(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload_json)
+                if not self.request_successful(r):
+                    self.error_message(r)
+            print(f"Removing tracks (operation {slices} of {slices})...")
+            final_lower = 100 * (slices - 1)
+            if final_lower != []:
+                payload = {
+                    "uris": tracks_to_remove[final_lower::]
+                }
+                payload_json = json.dumps(payload)
+                r = requests.delete(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload_json)
+                if not self.request_successful(r):
+                    self.error_message(r)
+            print(f"Tracks removed from {playlist_name}/n")
+
     def append_playlists_to_playlist(self, playlist, playlists_to_append, duplicates=False, log_added_tracks=False):
         tracks_to_append = []
         playlist_name = self.get_playlist(playlist)['name']
