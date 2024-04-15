@@ -326,6 +326,32 @@ class Spotify_App():
         else:
             self.error_message(r)
 
+    def edit_playlist_details(self, playlist_id, new_title="", public=None, collaborative=None, description=""):
+        self.read_user_auth_token
+        if self.user_auth_token_expired():
+            self.user_auth_token_from_refresh_token()
+        playlist_name = self.get_playlist(playlist_id)['name']
+        print(f"Updating details for {playlist_name}...")
+        hdrs = {
+            "Authorization": f"Bearer {self.user_auth_token}",
+            "Content-Type": "application/json"
+        }
+        payload_dict = {}
+        if new_title != "":
+            payload_dict['name'] = new_title
+        if public != None:
+            payload_dict['public'] = public
+        if collaborative != None:
+            payload_dict['collaborative'] = collaborative
+        if description != "":
+            payload_dict['description'] = description
+        payload = json.dumps(payload_dict)
+        r = requests.put(f"https://api.spotify.com/v1/playlists/{playlist_id}", headers=hdrs, data=payload)
+        if self.request_successful(r):
+            print("The details of this playlist have been updated\n")
+        else:
+            self.error_message(r)
+
     def created_playlist_cleanup(self):
         with open(f"app_info/created_playlists_{self.name}.json", "r") as file:
             playlists_dict = json.loads(file.read())
