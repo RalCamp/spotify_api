@@ -518,8 +518,54 @@ class Spotify_App():
         # we've already dealt with potential duplicates here, so we don't need to do it again
         self.append_tracks_to_playlist(playlist, tracks_to_append, duplicates=True)
 
-                
-
+    def combine_playlists(self, playlists, current_playlist, create_new_playlist=False):
+        if create_new_playlist:
+            # I'd like this to create a new playlist if one doesn't already exist
+            return None
+        else:
+            current_playlist_tracks = self.get_playlist_tracks(current_playlist)
+            if current_playlist_tracks == []:
+                current_playlist_tracks = []
+            else:
+                current_playlist_tracks = self.get_playlist_track_uris(current_playlist)
+        combined_tracks = []
+        tracks_to_remove = []
+        for playlist in playlists:
+            playlist_name = self.get_playlist(playlist)['name']
+            print(f"Getting current tracks from {playlist_name}...")
+            playlist_tracks = self.get_playlist_track_uris(playlist)
+            for track in playlist_tracks:
+                if track not in combined_tracks:
+                    combined_tracks.append(track)
+        print("Checking combined tracks against current playlist...")
+        print("Determining which tracks are no longer in this playlist...")
+        for track in current_playlist_tracks:
+            if track not in combined_tracks:
+                tracks_to_remove.append(track)
+        print("Determining new tracks...")
+        for track in current_playlist_tracks:
+            if track in combined_tracks:
+                combined_tracks.remove(track)
+        if len(combined_tracks) == 0 and len(tracks_to_remove) == 0:
+            print("###########################################")
+            print("No changes need to be made to this playlist")
+            print("###########################################\n")
+        else:
+            if len(combined_tracks) == 0:
+                print("##############################")
+                print("There are no new tracks to add")
+                print("##############################")
+            else:
+                print("Adding new tracks...")
+                self.append_tracks_to_playlist(current_playlist, combined_tracks, duplicates=True)
+            if len(tracks_to_remove) == 0:
+                print("#################################")
+                print("There are no old tracks to remove")
+                print("#################################")
+            else:
+                print("Removing old tracks...")
+                self.remove_tracks_from_playlist(current_playlist, tracks_to_remove)
+            print("The playlists have now been combined\n")
 
 
 first_app = Spotify_App("66768cc0e0fb4cc5a9ae5421aa6c399c", "644255b4d32e4644a3b25009a35b0dfb")
