@@ -364,14 +364,16 @@ class Spotify_App():
         if len(tracks_to_append) == 0:
             print("#########################################################")
             print("After removing duplicates there are no tracks left to add")
-            print("#########################################################")
+            print("#########################################################\n")
         elif len(tracks_to_append) <= 100:
             payload = {
                 "uris": tracks_to_append
             }
             payload_json = json.dumps(payload)
+            print("Adding tracks...")
             r = requests.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload_json)
             if self.request_successful(r):
+                print("Tracks added\n")
                 return r.json()
             else:
                 self.error_message(r)
@@ -401,7 +403,8 @@ class Spotify_App():
                 r = requests.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload_json)
                 if not self.request_successful(r):
                     self.error_message(r)
-            print("Tracks added")
+                else:
+                    print("Tracks added\n")
 
     def append_playlists_to_playlist(self, playlist, playlists_to_append, duplicates=False, log_added_tracks=False):
         tracks_to_append = []
