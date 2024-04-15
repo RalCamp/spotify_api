@@ -385,7 +385,6 @@ class Spotify_App():
                 lower_slice = 0 + (100 * (n - 1))
                 upper_slice = 100 + (100 * (n - 1))
                 payload = {
-                    "scope": "playlist-modify-private",
                     "uris": tracks_to_append[lower_slice:upper_slice]
                 }
                 payload_json = json.dumps(payload)
@@ -396,7 +395,6 @@ class Spotify_App():
             final_lower = 100 * (slices - 1)
             if final_lower != []:
                 payload = {
-                    "scope": "playlist-modify-private",
                     "uris": tracks_to_append[final_lower::]
                 }
                 payload_json = json.dumps(payload)
