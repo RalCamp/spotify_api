@@ -593,6 +593,26 @@ class Spotify_App():
                 self.remove_tracks_from_playlist(current_playlist, tracks_to_remove)
             print("The playlists have now been combined\n")
 
+####################################################################
+# This function feels a bit too specific so I'm 'quarantining' it here
+    def manage_democracy_bois_playlist(self, monthly_playlist, archive):
+        current_month = datetime.now().strftime('%m/%y')
+        print(current_month)
+        playlist_month = (self.get_playlist(monthly_playlist)['name'])[-5::]
+        print(playlist_month)
+        print("Checking whether playlist needs archiving...")
+        if current_month != playlist_month:
+            playlist_tracks = self.get_playlist_track_uris(monthly_playlist)
+            new_name = f"Democracy Sharing {current_month}"
+            print("Moving tracks to archive...")
+            self.append_tracks_to_playlist(archive, playlist_tracks)
+            print("Clearing monthly playlist...")
+            self.remove_tracks_from_playlist(monthly_playlist, playlist_tracks)
+            print("Renaming monthly playlist...")
+            self.edit_playlist_details(monthly_playlist, new_title=new_name)
+            print("Complete\n")
+        else:
+            print("The playlist is not yet out of date\n")
 
 first_app = Spotify_App("66768cc0e0fb4cc5a9ae5421aa6c399c", "644255b4d32e4644a3b25009a35b0dfb")
 print(first_app.__dict__)
