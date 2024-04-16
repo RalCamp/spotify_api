@@ -285,7 +285,7 @@ class Spotify_App():
         uris = []
         for track in playlist_tracks:
             uris.append(track['uri'])
-        return uris 
+        return uris
     
     def create_playlist(self, name, public=False, collaborative=False, description=""):
         self.read_user_auth_token
