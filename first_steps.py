@@ -612,10 +612,3 @@ class Spotify_App():
             print("Complete\n")
         else:
             print("The playlist is not yet out of date\n")
-
-first_app = Spotify_App("66768cc0e0fb4cc5a9ae5421aa6c399c", "644255b4d32e4644a3b25009a35b0dfb")
-print(first_app.__dict__)
-print(first_app.get_auth_token())
-print(first_app.get_playlist_tracks("0eZ4xWjBofNncbo5p5n2zn?si=6350fa5fc41143fe"))
-print(first_app.__dict__)
-print(first_app.append_tracks_to_playlist("0eZ4xWjBofNncbo5p5n2zn?si=6350fa5fc41143fe", ["0bM9c5A7CterSOEssmWqAa", "5LyRtsQLhcXmy50VXhQXXS"]))
