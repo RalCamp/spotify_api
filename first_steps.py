@@ -598,9 +598,7 @@ class Spotify_App():
 # This function feels a bit too specific so I'm 'quarantining' it here
     def manage_democracy_bois_playlist(self, monthly_playlist, archive):
         current_month = datetime.now().strftime('%m/%y')
-        print(current_month)
         playlist_month = (self.get_playlist(monthly_playlist)['name'])[-5::]
-        print(playlist_month)
         print("Checking whether playlist needs archiving...")
         if current_month != playlist_month:
             playlist_tracks = self.get_playlist_track_uris(monthly_playlist)
