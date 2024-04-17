@@ -210,6 +210,7 @@ class Spotify_App():
             self.error_message(r)
 
     def get_track_info(self, track_id):
+        self.read_client_auth_token()
         if self.client_token_expired():
             self.get_client_auth_token()
         hdrs = {
@@ -222,6 +223,7 @@ class Spotify_App():
             self.error_message(r)
 
     def get_playlist(self, playlist_id):
+        self.read_client_auth_token()
         if self.client_token_expired():
             self.get_client_auth_token()
         hdrs = {
@@ -246,6 +248,7 @@ class Spotify_App():
             return False
     
     def get_playlist_tracks(self, playlist_id):
+        self.read_client_auth_token()
         if self.client_token_expired():
             self.get_client_auth_token()
         hdrs = {
