@@ -356,6 +356,43 @@ class Spotify_App():
         else:
             self.error_message(r)
 
+    def find_potential_duplicates(self, playlist_id, check_artists=False):
+        if check_artists:
+            print("Note that this checks track names and artists only - manual verification is required")
+        else:
+            print("Note that this checks track names only - manual verification is required")
+        playlist_tracks = self.get_playlist_tracks(playlist_id)
+        potential_duplicates = {}
+        print("Checking tracks...")
+        for track in playlist_tracks:
+            name_to_check = track['name']
+            atrists_to_check = track['artists']
+            count = 0
+            if check_artists:
+                for track in playlist_tracks:
+                    if track['name'] == name_to_check and track['artists'] == atrists_to_check:
+                        count += 1
+            else:
+                for track in playlist_tracks:
+                    if track['name'] == name_to_check:
+                        count += 1
+            if count > 1 and name_to_check not in potential_duplicates:
+                potential_duplicates[name_to_check] = count
+        if potential_duplicates == {}:
+            print("#############################################")
+            print("Unable to find any potential duplicate tracks")
+            print("#############################################\n")
+        elif len(potential_duplicates) == 1:
+            print(f"There is 1 potential duplicate track in this playlist - it is:")
+            for track in potential_duplicates.keys():
+                print(track)
+            print()
+        else:
+            print(f"There are {len(potential_duplicates)} potential duplicate tracks in this playlist - they are:")
+            for track in potential_duplicates.keys():
+                print(track)
+            print()
+
     def created_playlist_cleanup(self):
         with open(f"app_info/created_playlists_{self.name}.json", "r") as file:
             playlists_dict = json.loads(file.read())
