@@ -65,15 +65,17 @@ client_utils.py
 - #get_client_auth_token()
 - #client_token_expired()
 
+user_auth_utils.py
+- #read_user_auth_token()
+- #read_user_refresh_token()
+- #write_user_auth_token()
+- #write_user_refresh_token()
+- #user_auth_token_expired()
+- #get_user_refresh_token()
+- #user_auth_token_from_refresh_token()
+
 user_utils.py
-- get_user_info()
-- read_user_auth_token()
-- read_user_refresh_token()
-- write_user_auth_token()
-- write_user_refresh_token()
-- user_auth_token_expired()
-- get_user_refresh_token()
-- user_auth_token_from_refresh_token()
+- #get_user_info()
 
 track_utils.py
 - get_track_info()
