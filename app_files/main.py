@@ -1,12 +1,12 @@
 import json
 import os
 
-from client_utils import Client
-from user_auth_utils import UserAuth
-from user_utils import User
-from track_utils import Track
-from playlist_utils import Playlist
-from custom_utils import Custom
+from app_files.client_utils import Client
+from app_files.user_auth_utils import UserAuth
+from app_files.user_utils import User
+from app_files.track_utils import Track
+from app_files.playlist_utils import Playlist
+from app_files.custom_utils import Custom
 
 class SpotifyApp():
 
@@ -26,8 +26,8 @@ class SpotifyApp():
         self.playlist_utils = Playlist(self.app_name, self.client_utils, self.user_auth_utils, self.user_utils)
         self.custom_utils = Custom(self.playlist_utils)
 
-        if not os.path.isfile(f"app_info/{self.app_name}.json"):
-            with open(f"app_info/{self.app_name}.json", 'w') as file:
+        if not os.path.isfile(f"app_files/app_info/{self.app_name}.json"):
+            with open(f"app_files/app_info/{self.app_name}.json", 'w') as file:
                 template = { 
                     "client_id": self.client_id, 
                     "client_secret": self.client_secret, 
@@ -39,7 +39,7 @@ class SpotifyApp():
                 json_object = json.dumps(template, indent=4)
                 file.write(json_object)
         else:
-            with open(f"app_info/{self.app_name}.json", 'r') as file:
+            with open(f"app_files/app_info/{self.app_name}.json", 'r') as file:
                 read_dict = json.loads(file.read())
             write_dict = { "client_id": self.client_id, "client_secret": self.client_secret, "client_auth_token": self.client_auth_token, "user_auth_code": self.user_auth_code, "user_auth_token": self.user_auth_token}
             for key in write_dict:
@@ -48,5 +48,5 @@ class SpotifyApp():
                 elif key in read_dict and read_dict[key] == "":
                     read_dict[key] = write_dict[key]
                 write_json = json.dumps(read_dict, indent=4)
-            with open(f"app_info/{self.app_name}.json", 'w') as file:
+            with open(f"app_files/app_info/{self.app_name}.json", 'w') as file:
                 file.write(write_json)

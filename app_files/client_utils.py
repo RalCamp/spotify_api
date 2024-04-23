@@ -1,6 +1,6 @@
 import json
 import requests
-from response_utils import Response
+from app_files.response_utils import Response
 
 class Client():
     def __init__(self, app_name, client_id, client_secret, client_auth_token):
@@ -10,16 +10,16 @@ class Client():
         self.client_auth_token = client_auth_token
 
     def read_client_auth_token(self):
-        with open(f"app_info/{self.app_name}.json", 'r') as file:
+        with open(f"app_files/app_info/{self.app_name}.json", 'r') as file:
             read_dict = json.loads(file.read())
         self.client_auth_token = read_dict["client_auth_token"]
 
     def write_client_auth_token(self):
-        with open(f"app_info/{self.app_name}.json", 'r') as file:
+        with open(f"app_files/app_info/{self.app_name}.json", 'r') as file:
             read_dict = json.loads(file.read())
         read_dict["client_auth_token"] = self.client_auth_token
         write_json = json.dumps(read_dict, indent=4)
-        with open(f"app_info/{self.app_name}.json", 'w') as file:
+        with open(f"app_files/app_info/{self.app_name}.json", 'w') as file:
             file.write(write_json)
 
     def get_client_auth_token(self):

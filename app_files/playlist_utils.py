@@ -3,7 +3,7 @@ import json
 import os
 import time
 import math
-from response_utils import Response
+from app_files.response_utils import Response
 
 class Playlist():
     def __init__(self, app_name, client, userauth, user):
@@ -100,8 +100,8 @@ class Playlist():
         })
         r = requests.post(user_endpoint, headers=hdrs, data=payload)
         if Response.request_successful(r):
-            if not os.path.isfile(f"app_info/created_playlists_{self.app_name}.json"):
-                with open(f"app_info/created_playlists_{self.app_name}.json", "w") as file:
+            if not os.path.isfile(f"app_files/app_info/created_playlists_{self.app_name}.json"):
+                with open(f"app_files/app_info/created_playlists_{self.app_name}.json", "w") as file:
                     request_return = r.json()
                     item = {
                         request_return["id"]: {
@@ -111,26 +111,26 @@ class Playlist():
                     item_json = json.dumps(item, indent=4)
                     file.write(item_json)
             else: 
-                with open(f"app_info/created_playlists_{self.app_name}.json", "r") as file:
+                with open(f"app_files/app_info/created_playlists_{self.app_name}.json", "r") as file:
                     playlists_dict = json.loads(file.read())
                 request_return = r.json()
                 if request_return["id"] not in playlists_dict.keys():
                     playlists_dict[request_return["id"]] = {"name": request_return["name"]}
                     playlists_json = json.dumps(playlists_dict, indent=4)
-                    with open(f"app_info/created_playlists_{self.app_name}.json", "w") as file:
+                    with open(f"app_files/app_info/created_playlists_{self.app_name}.json", "w") as file:
                         file.write(playlists_json)
             return r.json()
         else:
             Response.error_message(r)
 
     def created_playlist_cleanup(self):
-        with open(f"app_info/created_playlists_{self.app_name}.json", "r") as file:
+        with open(f"app_files/app_info/created_playlists_{self.app_name}.json", "r") as file:
             playlists_dict = json.loads(file.read())
         for id in playlists_dict.keys():
             if not self.playlist_exist(id):
                 playlists_dict.pop(id)
         playlists_json = json.dumps(playlists_dict, indent=4)
-        with open(f"app_info/created_playlists_{self.app_name}.json", "w") as file:
+        with open(f"app_files/app_info/created_playlists_{self.app_name}.json", "w") as file:
             file.write(playlists_json)
         return playlists_json
 
@@ -309,12 +309,12 @@ class Playlist():
                 for uri in uris:
                     tracks_to_append.append(uri)
         if log_added_tracks == True:
-            if not os.path.isfile(f"app_info/{playlist}_added_tracks.json"):
-                with open(f"app_info/{playlist}_added_tracks.json", 'w') as file:
+            if not os.path.isfile(f"app_files/app_info/{playlist}_added_tracks.json"):
+                with open(f"app_files/app_info/{playlist}_added_tracks.json", 'w') as file:
                     added_tracks = json.dumps(tracks_to_append, indent=4)
                     file.write(added_tracks)
             else:
-                with open(f"app_info/{playlist}_added_tracks.json", 'r') as file:
+                with open(f"app_files/app_info/{playlist}_added_tracks.json", 'r') as file:
                     added_tracks = json.loads(file.read())
                 for track in added_tracks:
                     if track in tracks_to_append:
@@ -324,7 +324,7 @@ class Playlist():
                         added_tracks.append(track)
                     print("Logging added tracks...")
                     added_tracks_json = json.dumps(added_tracks, indent=4)
-                    with open(f"app_info/{playlist}_added_tracks.json", 'w') as file:
+                    with open(f"app_files/app_info/{playlist}_added_tracks.json", 'w') as file:
                         file.write(added_tracks_json)
         if tracks_to_append == []:
             print("#########################################################")
