@@ -33,6 +33,10 @@ class Client():
         self.client_auth_token = r.json()['access_token']
         self.write_client_auth_token()
         return r.json()
+    
+    def return_client_auth_token(self):
+        self.read_client_auth_token()
+        return self.client_auth_token
 
     def client_token_expired(self):
         self.read_client_auth_token()
