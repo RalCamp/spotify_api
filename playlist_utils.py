@@ -6,7 +6,8 @@ import math
 from response_utils import Response
 
 class Playlist():
-    def __init__(self, client, userauth, user):
+    def __init__(self, app_name, client, userauth, user):
+        self.app_name = app_name
         self.client = client
         self.userauth = userauth
         self.user = user
@@ -99,8 +100,8 @@ class Playlist():
         })
         r = requests.post(user_endpoint, headers=hdrs, data=payload)
         if Response.request_successful(r):
-            if not os.path.isfile(f"app_info/created_playlists_{self.name}.json"):
-                with open(f"app_info/created_playlists_{self.name}.json", "w") as file:
+            if not os.path.isfile(f"app_info/created_playlists_{self.app_name}.json"):
+                with open(f"app_info/created_playlists_{self.app_name}.json", "w") as file:
                     request_return = r.json()
                     item = {
                         request_return["id"]: {
@@ -110,26 +111,26 @@ class Playlist():
                     item_json = json.dumps(item, indent=4)
                     file.write(item_json)
             else: 
-                with open(f"app_info/created_playlists_{self.name}.json", "r") as file:
+                with open(f"app_info/created_playlists_{self.app_name}.json", "r") as file:
                     playlists_dict = json.loads(file.read())
                 request_return = r.json()
                 if request_return["id"] not in playlists_dict.keys():
                     playlists_dict[request_return["id"]] = {"name": request_return["name"]}
                     playlists_json = json.dumps(playlists_dict, indent=4)
-                    with open(f"app_info/created_playlists_{self.name}.json", "w") as file:
+                    with open(f"app_info/created_playlists_{self.app_name}.json", "w") as file:
                         file.write(playlists_json)
             return r.json()
         else:
             Response.error_message(r)
 
     def created_playlist_cleanup(self):
-        with open(f"app_info/created_playlists_{self.name}.json", "r") as file:
+        with open(f"app_info/created_playlists_{self.app_name}.json", "r") as file:
             playlists_dict = json.loads(file.read())
         for id in playlists_dict.keys():
             if not self.playlist_exist(id):
                 playlists_dict.pop(id)
         playlists_json = json.dumps(playlists_dict, indent=4)
-        with open(f"app_info/created_playlists_{self.name}.json", "w") as file:
+        with open(f"app_info/created_playlists_{self.app_name}.json", "w") as file:
             file.write(playlists_json)
         return playlists_json
 
