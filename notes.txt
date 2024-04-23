@@ -93,3 +93,6 @@ playlist_utils.py
 - append_playlists_to_playlist()
 - combine_playlists()
 - find_potential_duplicates()
+
+custom_utils.py
+- manage_democracy_bois_playlist()
