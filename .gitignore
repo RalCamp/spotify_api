@@ -1,2 +1,4 @@
 app_info/*
+__pycache__
+__pycache__/*
 run.py
