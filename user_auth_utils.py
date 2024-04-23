@@ -37,6 +37,10 @@ class UserAuth():
         with open(f"app_info/{self.name}.json", 'w') as file:
             file.write(write_json)
 
+    def return_user_auth_token(self):
+        self.read_user_auth_token()
+        return self.user_auth_token
+
     def user_auth_token_expired(self):
         self.read_user_auth_token()
         hdrs = {
