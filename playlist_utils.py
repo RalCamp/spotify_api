@@ -63,7 +63,7 @@ class Playlist():
                 track['artists'] = [ artist['name'] for artist in item['track']['artists']]
                 track['album'] = item['track']['album']['name']
                 tracks.append(track)
-            time.sleep(3)
+            time.sleep(1)
             r = requests.get(playlist["next"], headers=hdrs)
             if not Response.request_successful(r):
                 Response.error_message(r)  
@@ -200,7 +200,7 @@ class Playlist():
             slices = math.ceil(len(tracks_to_append) / 100)
             for n in range(1, (slices)):
                 print(f"Adding tracks (operation {n} of {slices})...")
-                time.sleep(3)
+                time.sleep(1)
                 lower_slice = 0 + (100 * (n - 1))
                 upper_slice = 100 + (100 * (n - 1))
                 payload = {
@@ -263,7 +263,7 @@ class Playlist():
             slices = math.ceil(len(tracks_to_remove) / 100)
             for n in range(1, (slices)):
                 print(f"Removing tracks (operation {n} of {slices})...")
-                time.sleep(3)
+                time.sleep(1)
                 lower_slice = 0 + (100 * (n - 1))
                 upper_slice = 100 + (100 * (n - 1))
                 payload = {
@@ -295,7 +295,7 @@ class Playlist():
             for playlist_to_append in playlists_to_append:
                 playlist_name = self.get_playlist(playlist_to_append)['name']
                 print(f"Getting tracks from {playlist_name}...")
-                time.sleep(3)
+                time.sleep(1)
                 uris = self.get_playlist_track_uris(playlist_to_append)
                 for uri in uris:
                     if uri not in playlist_tracks and uri not in tracks_to_append:
@@ -304,7 +304,7 @@ class Playlist():
             for playlist_to_append in playlists_to_append:
                 playlist_name = self.get_playlist(playlist_to_append)['name']
                 print(f"Getting tracks from {playlist_name}...")
-                time.sleep(3)
+                time.sleep(1)
                 uris = self.get_playlist_track_uris(playlist_to_append)
                 for uri in uris:
                     tracks_to_append.append(uri)
