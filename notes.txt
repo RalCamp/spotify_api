@@ -47,3 +47,52 @@ curl "https://api.spotify.com/v1/artists/31TPClRtHm23RisEBtV3X7?si=1WhO7jyMT5yUi
   "type" : "artist",
   "uri" : "spotify:artist:31TPClRtHm23RisEBtV3X7"
 }
+
+##########################################################################################
+Refactor
+##########################################################################################
+
+main.py
+- inti function for app
+
+response_utils.py
+- #request_successful()
+- #error_message()
+
+client_utils.py
+- #read_client_auth_token()
+- #write_client_auth_token()
+- #get_client_auth_token()
+- #client_token_expired()
+
+user_auth_utils.py
+- #read_user_auth_token()
+- #read_user_refresh_token()
+- #write_user_auth_token()
+- #write_user_refresh_token()
+- #user_auth_token_expired()
+- #get_user_refresh_token()
+- #user_auth_token_from_refresh_token()
+
+user_utils.py
+- #get_user_info()
+
+track_utils.py
+- #get_track_info()
+
+playlist_utils.py
+- #get_playlist()
+- #get_playlist_tracks()
+- #get_playlist_track_uris()
+- #create_playlist()
+- #edit_playlist_details()
+- #playlist_exist()
+- #created_playlist_cleanup()
+- #append_tracks_to_playlist()
+- #remove_tracks_from_playlist()
+- #append_playlists_to_playlist()
+- #combine_playlists()
+- #find_potential_duplicates()
+
+custom_utils.py
+- manage_democracy_bois_playlist()
