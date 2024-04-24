@@ -284,6 +284,43 @@ class Playlist():
                 if not Response.request_successful(r):
                     Response.error_message(r)
             print(f"Tracks removed from {playlist_name}/n")
+            
+    def find_potential_duplicates(self, playlist_id, check_artists=False):
+        if check_artists:
+            print("Note that this checks track names and artists only - manual verification is required")
+        else:
+            print("Note that this checks track names only - manual verification is required")
+        playlist_tracks = self.get_playlist_tracks(playlist_id)
+        potential_duplicates = {}
+        print("Checking tracks...")
+        for track in playlist_tracks:
+            name_to_check = track['name']
+            atrists_to_check = track['artists']
+            count = 0
+            if check_artists:
+                for track in playlist_tracks:
+                    if track['name'] == name_to_check and track['artists'] == atrists_to_check:
+                        count += 1
+            else:
+                for track in playlist_tracks:
+                    if track['name'] == name_to_check:
+                        count += 1
+            if count > 1 and name_to_check not in potential_duplicates:
+                potential_duplicates[name_to_check] = count
+        if potential_duplicates == {}:
+            print("#############################################")
+            print("Unable to find any potential duplicate tracks")
+            print("#############################################\n")
+        elif len(potential_duplicates) == 1:
+            print(f"There is 1 potential duplicate track in this playlist - it is:")
+            for track in potential_duplicates.keys():
+                print(track)
+            print()
+        else:
+            print(f"There are {len(potential_duplicates)} potential duplicate tracks in this playlist - they are:")
+            for track in potential_duplicates.keys():
+                print(track)
+            print()
 
     def append_playlists_to_playlist(self, playlist, playlists_to_append, duplicates=False, log_added_tracks=False):
         tracks_to_append = []
