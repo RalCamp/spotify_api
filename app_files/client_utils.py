@@ -30,9 +30,13 @@ class Client():
             "client_secret": self.client_secret
             }
         r = requests.post('https://accounts.spotify.com/api/token', data=payload)
-        self.client_auth_token = r.json()['access_token']
-        self.write_client_auth_token()
-        return r.json()
+        print(r.json())
+        if Response.request_successful(r):
+            self.client_auth_token = r.json()['access_token']
+            self.write_client_auth_token()
+            return r.json()
+        else:
+            Response.error_message(r)
     
     def return_client_auth_token(self):
         self.read_client_auth_token()
