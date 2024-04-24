@@ -2,7 +2,8 @@ import requests
 from app_files.response_utils import Response
 
 class User():
-    def __init__(self, userauth):
+    def __init__(self, user_id, userauth):
+        self.user_id = user_id
         self.userauth = userauth
 
     def manage_userauth_creds(self):
