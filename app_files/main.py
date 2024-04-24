@@ -10,18 +10,19 @@ from app_files.custom_utils import Custom
 
 class SpotifyApp():
 
-    def __init__(self, app_name, client_id, client_secret, client_auth_token="", user_auth_code="", user_auth_token="", user_refresh_token=""):
+    def __init__(self, app_name, client_id, client_secret, client_auth_token="", user_id="", user_auth_code="", user_auth_token="", user_refresh_token=""):
         self.app_name = app_name
         self.client_id = client_id
         self.client_secret = client_secret
         self.client_auth_token = client_auth_token
+        self.user_id = user_id
         self.user_auth_code = user_auth_code
         self.user_auth_token = user_auth_token
         self.user_refresh_token = user_refresh_token
 
         self.client_utils = Client(self.app_name, self.client_id, self.client_secret, self.client_auth_token)
         self.user_auth_utils = UserAuth(self.app_name, self.user_auth_token, self.user_refresh_token, self.client_id, self.client_secret)
-        self.user_utils = User(self.user_auth_utils)
+        self.user_utils = User(self.user_id, self.user_auth_utils)
         self.track_utils = Track(self.client_utils)
         self.playlist_utils = Playlist(self.app_name, self.client_utils, self.user_auth_utils, self.user_utils)
         self.custom_utils = Custom(self.playlist_utils)
@@ -32,6 +33,7 @@ class SpotifyApp():
                     "client_id": self.client_id, 
                     "client_secret": self.client_secret, 
                     "client_auth_token": self.client_auth_token, 
+                    "user_id": self.user_id,
                     "user_auth_code": self.user_auth_code, 
                     "user_auth_token": self.user_auth_token,
                     "user_refresh_token": self.user_refresh_token
@@ -41,7 +43,7 @@ class SpotifyApp():
         else:
             with open(f"app_files/app_info/{self.app_name}.json", 'r') as file:
                 read_dict = json.loads(file.read())
-            write_dict = { "client_id": self.client_id, "client_secret": self.client_secret, "client_auth_token": self.client_auth_token, "user_auth_code": self.user_auth_code, "user_auth_token": self.user_auth_token}
+            write_dict = { "client_id": self.client_id, "client_secret": self.client_secret, "client_auth_token": self.client_auth_token, "user_id": self.user_id, "user_auth_code": self.user_auth_code, "user_auth_token": self.user_auth_token}
             for key in write_dict:
                 if key not in read_dict.keys():
                     read_dict[key] = write_dict[key]
