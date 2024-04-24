@@ -5,10 +5,13 @@ class User():
     def __init__(self, userauth):
         self.userauth = userauth
 
-    def get_user_info(self):
-        self.userauth.read_user_auth_token()
+    def manage_userauth_creds(self):
+        self.userauth.read_user_auth_token
         if self.userauth.user_auth_token_expired():
             self.userauth.user_auth_token_from_refresh_token()
+
+    def get_user_info(self):
+        self.manage_userauth_creds()
         hdrs = {
             "Authorization": f"Bearer {self.userauth.return_user_auth_token()}",
             "scope": "user-read-private"
