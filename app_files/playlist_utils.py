@@ -460,9 +460,9 @@ class Playlist():
         for feature in playlist_audio_features.keys():
             arr = np.array(playlist_audio_features[feature])
             data = {}
-            data["mean"] = np.mean(arr)
+            data["mean"] = round(np.mean(arr), 3)
             data["median"] = np.median(arr)
-            data["standard deviation"] = np.std(arr)
+            data["standard deviation"] = round(np.std(arr), 3)
             playlist_averages[feature] = data
         return playlist_averages
         
