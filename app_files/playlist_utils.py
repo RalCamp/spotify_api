@@ -6,11 +6,12 @@ import math
 from app_files.response_utils import Response
 
 class Playlist():
-    def __init__(self, app_name, client, userauth, user):
+    def __init__(self, app_name, client, userauth, user, track):
         self.app_name = app_name
         self.client = client
         self.userauth = userauth
         self.user = user
+        self.track = track
 
     def manage_client_creds(self):
         self.client.read_client_auth_token()
