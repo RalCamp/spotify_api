@@ -3,6 +3,8 @@ import json
 import os
 import time
 import math
+import numpy as np
+from scipy import stats
 from app_files.response_utils import Response
 
 class Playlist():
@@ -421,3 +423,46 @@ class Playlist():
                 print("Removing old tracks...")
                 self.remove_tracks_from_playlist(current_playlist, tracks_to_remove)
             print("The playlists have now been combined\n")
+
+    def get_playlist_track_audio_features(self, playlist_id):
+        self.manage_client_creds()
+        playlist_name = self.get_playlist(playlist_id)['name']
+        playlist_uris = self.get_playlist_track_uris(playlist_id)
+        uris = [uri[14::] for uri in playlist_uris]
+        playlist_track_audio_features = {}
+        print(f"Getting audio features for {len(playlist_uris)} tracks from {playlist_name}...")
+        for uri in uris:
+            time.sleep(0.5)
+            playlist_track_audio_features[uri] = self.track.get_audio_features(uri)
+        return playlist_track_audio_features
+    
+    def get_playlist_audio_features(self, playlist_id):
+        playlist_track_audio_features = self.get_playlist_track_audio_features(playlist_id)
+        playlist_audio_features = {
+            "danceability": [],
+            "energy": [],
+            "loudness": [],
+            "speechiness": [],
+            "acousticness": [],
+            "instrumentalness": [],
+            "liveness": [],
+            "valence": [],
+            "tempo": []
+        }
+        for track in playlist_track_audio_features.keys():
+            for feature in playlist_audio_features.keys():
+                playlist_audio_features[feature].append(playlist_track_audio_features[track][feature])
+        return playlist_audio_features
+    
+    def get_average_playlist_audio_features(self, playlist_id):
+        playlist_audio_features = self.get_playlist_audio_features(playlist_id)
+        playlist_averages = {}
+        for feature in playlist_audio_features.keys():
+            arr = np.array(playlist_audio_features[feature])
+            data = {}
+            data["mean"] = np.mean(arr)
+            data["median"] = np.median(arr)
+            data["standard deviation"] = np.std(arr)
+            playlist_averages[feature] = data
+        return playlist_averages
+        
