@@ -23,7 +23,7 @@ class SpotifyApp():
         self.client_utils = Client(self.app_name, self.client_id, self.client_secret, self.client_auth_token)
         self.user_auth_utils = UserAuth(self.app_name, self.user_auth_token, self.user_refresh_token, self.client_id, self.client_secret)
         self.user_utils = User(self.user_id, self.user_auth_utils)
-        self.track_utils = Track(self.client_utils)
+        self.track_utils = Track(self.client_utils, self.user_auth_utils)
         self.playlist_utils = Playlist(self.app_name, self.client_utils, self.user_auth_utils, self.user_utils, self.track_utils)
         self.custom_utils = Custom(self.playlist_utils)
 
