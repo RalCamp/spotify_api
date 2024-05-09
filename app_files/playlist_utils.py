@@ -499,4 +499,59 @@ class Playlist():
             data["standard deviation"] = round(np.std(arr), 3)
             playlist_averages[feature] = data
         return playlist_averages
+    
+    def recommend_tracks_from_playlist(self, playlist_id, seed, use_audio_features=False, use_min_max=False, create_playlist=False):
+        playlist_tracks = self.get_playlist_tracks(playlist_id)
+        seeds={ 'seed_artists': [], 'seed_genres': [], 'seed_tracks': [] }
+        if seed == 'artists':
+            print("Using 5 most common playlist artists as seed...")
+            artists = self.get_playlist_artists(playlist_id, unique_artists=False)
+            artist_count = {}
+            for artist in artists:
+                if artist not in artist_count.keys():
+                    artist_count[artist] = artists.count(artist)
+            artists_sorted = [*dict(sorted(artist_count.items(), key=lambda item: item[1]))][::-1]
+            seeds['seed_artists'] = artists_sorted[0:5]
+        elif seed == 'genres':
+            print("Using 5 most common playlist genres as seed...")
+            genres = []
+            genre_count = {}
+            print("Getting playlist artists...")
+            artists = self.get_playlist_artists(playlist_id, unique_artists=False)
+            artist_count = 1
+            for artist in artists:
+                print (f"Getting genres for artist {artist_count} of {len(artists)}")
+                artist_genres = self.artist.get_artist(artist)['genres']
+                for genre in artist_genres:
+                    genres.append(genre)
+                artist_count += 1
+            time.sleep(1)
+            for genre in genres:
+                if genre not in genre_count.keys():
+                    genre_count[genre] = genres.count(genre)
+            genres_sorted = [*dict(sorted(genre_count.items(), key=lambda item: item[1]))][::-1]
+            seeds['seed_genres'] = genres_sorted[0:5]
+        elif seed == 'tracks':
+            print("Using 5 most popular playlist songs as seed...")
+            tracks = {}
+            for track in playlist_tracks:
+                if track['id'] not in tracks.keys():
+                    tracks[track['id']] = track['popularity']
+            tracks_sorted = [*dict(sorted(tracks.items(), key=lambda item: item[1]))][::-1]
+            seeds['seed_tracks'] = tracks_sorted[0:5]
+        if use_audio_features:
+            average_audio_features = self.get_average_playlist_audio_features(playlist_id)
+            audio_features = {}
+            for feature in average_audio_features.keys():
+                audio_features[f"target_{feature}"] = average_audio_features[feature]['mean']
+                if use_min_max:
+                    audio_features[f"min_{feature}"] = round(average_audio_features[feature]['mean'] - average_audio_features[feature]['standard deviation'], 3)
+                    audio_features[f"max_{feature}"] = round(average_audio_features[feature]['mean'] + average_audio_features[feature]['standard deviation'], 3)
+        else:
+            audio_features = None
+        if create_playlist:
+            playlist_name = self.get_playlist(playlist_id)['name']
+            self.playlist_of_recommended_tracks(playlist_name=f"{playlist_name} Recommendations", limit=100, seeds=seeds, audio_features=audio_features)
+        else:
+            return self.track.get_recommendations(100, None, seeds, audio_features)
         
