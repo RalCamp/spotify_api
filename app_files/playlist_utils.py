@@ -275,7 +275,6 @@ class Playlist():
         print("Checking format of supplied tracks...")
         tracks_to_remove_formatted = []
         for track in tracks_to_remove:
-            print(track in tracks_in_playlist)
             if track in tracks_in_playlist:
                 if track.find("spotify:track:") == -1:
                     track = "spotify:track:" + track
