@@ -8,11 +8,12 @@ from scipy import stats
 from app_files.response_utils import Response
 
 class Playlist():
-    def __init__(self, app_name, client, userauth, user, track):
+    def __init__(self, app_name, client, userauth, user, artist, track):
         self.app_name = app_name
         self.client = client
         self.userauth = userauth
         self.user = user
+        self.artist = artist
         self.track = track
 
     def manage_client_creds(self):

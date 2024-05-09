@@ -26,7 +26,7 @@ class SpotifyApp():
         self.user_utils = User(self.user_id, self.user_auth_utils)
         self.artist_utils = Artist(self.client_utils)
         self.track_utils = Track(self.client_utils, self.user_auth_utils)
-        self.playlist_utils = Playlist(self.app_name, self.client_utils, self.user_auth_utils, self.user_utils, self.track_utils)
+        self.playlist_utils = Playlist(self.app_name, self.client_utils, self.user_auth_utils, self.user_utils, self.artist_utils, self.track_utils)
         self.custom_utils = Custom(self.playlist_utils)
 
         if not os.path.isfile(f"app_files/app_info/{self.app_name}.json"):
