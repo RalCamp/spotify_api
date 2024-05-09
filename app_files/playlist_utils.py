@@ -322,7 +322,7 @@ class Playlist():
                 r = requests.delete(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=hdrs, data=payload_json)
                 if not Response.request_successful(r):
                     Response.error_message(r)
-            print(f"Tracks removed from {playlist_name}/n")
+            print(f"Tracks removed from {playlist_name}\n")
             
     def find_potential_duplicates(self, playlist_id, check_artists=False):
         self.manage_client_creds()
