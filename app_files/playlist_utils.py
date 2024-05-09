@@ -89,6 +89,38 @@ class Playlist():
             uris.append(track['id'])
         return uris
     
+    def get_playlist_artists(self, playlist_id, unique_artists=True):
+        self.manage_client_creds()
+        hdrs = {
+            "Authorization": f"Bearer {self.client.return_client_auth_token()}"
+        }
+        r = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?limit=100", headers=hdrs)
+        if not Response.request_successful(r):
+            Response.error_message(r)  
+            return None
+        playlist = r.json()
+        artists = []
+        while playlist["next"] != None:
+            for item in playlist['items']:
+                for artist in item['track']['artists']:
+                    if unique_artists == True and artist['id'] not in artists:
+                        artists.append(artist['id'])
+                    else:
+                        artists.append(artist['id'])
+            time.sleep(1)
+            r = requests.get(playlist["next"], headers=hdrs)
+            if not Response.request_successful(r):
+                Response.error_message(r)  
+                return None
+            playlist = r.json()
+        for item in playlist['items']:
+            for artist in item['track']['artists']:
+                if unique_artists == True and artist['id'] not in artists:
+                    artists.append(artist['id'])
+                else:
+                    artists.append(artist['id'])
+        return artists
+    
     def create_playlist(self, name, public=False, collaborative=False, description=""):
         self.manage_userauth_creds()
         user_id = self.user.get_user_info()["id"]
