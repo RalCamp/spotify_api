@@ -272,9 +272,10 @@ class Playlist():
         print("Checking format of supplied tracks...")
         tracks_to_remove_formatted = []
         for track in tracks_to_remove:
-            if track.find("spotify:track:") == -1:
-                track = "spotify:track:" + track
+            print(track in tracks_in_playlist)
             if track in tracks_in_playlist:
+                if track.find("spotify:track:") == -1:
+                    track = "spotify:track:" + track
                 item_to_add = {}
                 item_to_add['uri'] = track
                 tracks_to_remove_formatted.append(item_to_add)
@@ -282,7 +283,7 @@ class Playlist():
         if len(tracks_to_remove) == 0:
             print("#####################################################################################")
             print(f"None of these tracks are in {playlist_name}")
-            print("#####################################################################################/n")
+            print("#####################################################################################\n")
         elif len(tracks_to_remove) <= 100:
             payload = {
                 "tracks": tracks_to_remove
