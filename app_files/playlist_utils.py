@@ -63,7 +63,7 @@ class Playlist():
             for item in playlist['items']:
                 track = {}
                 track['name'] = item['track']['name']
-                track['uri'] = item['track']['uri']
+                track['id'] = item['track']['id']
                 track['artists'] = [ artist['name'] for artist in item['track']['artists']]
                 track['album'] = item['track']['album']['name']
                 tracks.append(track)
@@ -76,7 +76,7 @@ class Playlist():
         for item in playlist['items']:
             track = {}
             track['name'] = item['track']['name']
-            track['uri'] = item['track']['uri']
+            track['id'] = item['track']['id']
             track['artists'] = [ artist['name'] for artist in item['track']['artists']]
             track['album'] = item['track']['album']['name']
             tracks.append(track)
@@ -86,7 +86,7 @@ class Playlist():
         playlist_tracks = self.get_playlist_tracks(playlist_id)
         uris = []
         for track in playlist_tracks:
-            uris.append(track['uri'])
+            uris.append(track['id'])
         return uris
     
     def create_playlist(self, name, public=False, collaborative=False, description=""):
