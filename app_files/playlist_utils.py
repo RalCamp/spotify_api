@@ -3,8 +3,9 @@ import json
 import os
 import time
 import math
-import numpy as np
-from scipy import stats
+import numpy as np # type: ignore
+from scipy import stats # type: ignore
+from datetime import datetime
 from app_files.response_utils import Response
 
 class Playlist():
@@ -66,6 +67,7 @@ class Playlist():
                 track['id'] = item['track']['id']
                 track['artists'] = [ artist['name'] for artist in item['track']['artists']]
                 track['album'] = item['track']['album']['name']
+                track['popularity'] = item['track']['popularity']
                 tracks.append(track)
             time.sleep(1)
             r = requests.get(playlist["next"], headers=hdrs)
@@ -79,6 +81,7 @@ class Playlist():
             track['id'] = item['track']['id']
             track['artists'] = [ artist['name'] for artist in item['track']['artists']]
             track['album'] = item['track']['album']['name']
+            track['popularity'] = item['track']['popularity']
             tracks.append(track)
         return tracks     
     
@@ -323,6 +326,8 @@ class Playlist():
             print(f"Tracks removed from {playlist_name}/n")
             
     def find_potential_duplicates(self, playlist_id, check_artists=False):
+        self.manage_client_creds()
+        self.manage_userauth_creds()
         if check_artists:
             print("Note that this checks track names and artists only - manual verification is required")
         else:
@@ -462,10 +467,9 @@ class Playlist():
         self.manage_client_creds()
         playlist_name = self.get_playlist(playlist_id)['name']
         playlist_uris = self.get_playlist_track_uris(playlist_id)
-        uris = [uri[14::] for uri in playlist_uris]
         playlist_track_audio_features = {}
         print(f"Getting audio features for {len(playlist_uris)} tracks from {playlist_name}...")
-        for uri in uris:
+        for uri in playlist_uris:
             time.sleep(0.5)
             playlist_track_audio_features[uri] = self.track.get_audio_features(uri)
         return playlist_track_audio_features
