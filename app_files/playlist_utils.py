@@ -554,4 +554,20 @@ class Playlist():
             self.playlist_of_recommended_tracks(playlist_name=f"{playlist_name} Recommendations", limit=100, seeds=seeds, audio_features=audio_features)
         else:
             return self.track.get_recommendations(100, None, seeds, audio_features)
+
+    def playlist_of_recommended_tracks(self, playlist_name="", limit=20, market=None, seeds={ 'seed_artists': [], 'seed_genres': [], 'seed_tracks': [] }, audio_features=None):
+        self.manage_client_creds()
+        self.manage_userauth_creds()
+        if playlist_name == "":
+            current_date = datetime.now().strftime("%d/%m/%y")
+            playlist_name = f"Recommendations {current_date}"
+        print("Getting recommendations...")
+        recs = self.track.get_recommendations(limit, market, seeds, audio_features)
+        to_add = []
+        for track in recs["tracks"]:
+            to_add.append(track['id'])
+        print("Creating playlist...")
+        new_playlist = self.create_playlist(name=playlist_name)
+        self.append_tracks_to_playlist(new_playlist["id"], to_add)
+        return new_playlist["id"]
         
