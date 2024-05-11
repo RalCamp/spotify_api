@@ -29,6 +29,9 @@ class SpotifyApp():
         self.playlist_utils = Playlist(self.app_name, self.client_utils, self.user_auth_utils, self.user_utils, self.artist_utils, self.track_utils)
         self.custom_utils = Custom(self.playlist_utils)
 
+        if not os.path.isdir("app_files/app_info"):
+            os.mkdir("app_files/app_info")
+
         if not os.path.isfile(f"app_files/app_info/{self.app_name}.json"):
             with open(f"app_files/app_info/{self.app_name}.json", 'w') as file:
                 template = { 
