@@ -6,10 +6,6 @@ class Track():
         self.client = client
         self.userauth = userauth
 
-    def manage_client_creds(self):
-        self.client.read_client_auth_token()
-        if self.client.client_token_expired():
-            self.client.get_client_auth_token()
 
     def manage_userauth_creds(self):
         self.userauth.read_user_auth_token
@@ -17,7 +13,7 @@ class Track():
             self.userauth.user_auth_token_from_refresh_token()
 
     def get_track_info(self, track_id):
-        self.manage_client_creds()
+        self.client.manage_client_creds()
         hdrs = {
             "Authorization": f"Bearer {self.client.return_client_auth_token()}"
         }
@@ -28,7 +24,7 @@ class Track():
             Response.error_message(r)
 
     def get_audio_features(self, track_id):
-        self.manage_client_creds()
+        self.client.manage_client_creds()
         hdrs = {
             "Authorization": f"Bearer {self.client.return_client_auth_token()}"
         }
@@ -39,7 +35,7 @@ class Track():
             Response.error_message(r)
 
     def get_audio_analysis(self, track_id):
-        self.manage_client_creds()
+        self.client.manage_client_creds()
         hdrs = {
             "Authorization": f"Bearer {self.client.return_client_auth_token()}"
         }

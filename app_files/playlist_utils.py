@@ -17,18 +17,13 @@ class Playlist():
         self.artist = artist
         self.track = track
 
-    def manage_client_creds(self):
-        self.client.read_client_auth_token()
-        if self.client.client_token_expired():
-            self.client.get_client_auth_token()
-
     def manage_userauth_creds(self):
         self.userauth.read_user_auth_token
         if self.userauth.user_auth_token_expired():
             self.userauth.user_auth_token_from_refresh_token()
 
     def playlist_exist(self, playlist_id):
-        self.manage_client_creds()
+        self.client.manage_client_creds()
         hdrs = {
             "Authorization": f"Bearer {self.client.return_client_auth_token()}"
         }
@@ -39,7 +34,7 @@ class Playlist():
             return False
 
     def get_playlist(self, playlist_id):
-        self.manage_client_creds()
+        self.client.manage_client_creds()
         hdrs = {
             "Authorization": f"Bearer {self.client.return_client_auth_token()}"
         }
@@ -50,7 +45,7 @@ class Playlist():
             Response.error_message(r)
     
     def get_playlist_tracks(self, playlist_id):
-        self.manage_client_creds()
+        self.client.manage_client_creds()
         hdrs = {
             "Authorization": f"Bearer {self.client.return_client_auth_token()}"
         }
@@ -93,7 +88,7 @@ class Playlist():
         return uris
     
     def get_playlist_artists(self, playlist_id, unique_artists=True):
-        self.manage_client_creds()
+        self.client.manage_client_creds()
         hdrs = {
             "Authorization": f"Bearer {self.client.return_client_auth_token()}"
         }
@@ -325,8 +320,8 @@ class Playlist():
             print(f"Tracks removed from {playlist_name}\n")
             
     def find_potential_duplicates(self, playlist_id, check_artists=False):
-        self.manage_client_creds()
         self.manage_userauth_creds()
+        self.client.manage_client_creds()
         if check_artists:
             print("Note that this checks track names and artists only - manual verification is required")
         else:
@@ -463,7 +458,7 @@ class Playlist():
             print("The playlists have now been combined\n")
 
     def get_playlist_track_audio_features(self, playlist_id):
-        self.manage_client_creds()
+        self.client.manage_client_creds()
         playlist_name = self.get_playlist(playlist_id)['name']
         playlist_uris = self.get_playlist_track_uris(playlist_id)
         playlist_track_audio_features = {}
@@ -504,8 +499,8 @@ class Playlist():
         return playlist_averages
 
     def playlist_of_recommended_tracks(self, playlist_name="", limit=20, market=None, seeds={ 'seed_artists': [], 'seed_genres': [], 'seed_tracks': [] }, audio_features=None):
-        self.manage_client_creds()
         self.manage_userauth_creds()
+        self.client.manage_client_creds()
         if playlist_name == "":
             current_date = datetime.now().strftime("%d/%m/%y")
             playlist_name = f"Recommendations {current_date}"
