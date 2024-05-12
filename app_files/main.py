@@ -57,3 +57,9 @@ class SpotifyApp():
                 write_json = json.dumps(read_dict, indent=4)
             with open(f"app_files/app_info/{self.app_name}.json", 'w') as file:
                 file.write(write_json)
+
+        if self.user_id == "":
+            with open(f"app_files/app_info/{self.app_name}.json", 'r') as file:
+                read_dict = json.loads(file.read())
+            if read_dict['user_id'] != "":
+                self.user_id = read_dict['user_id']
