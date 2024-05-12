@@ -109,3 +109,8 @@ class UserAuth():
             return r.json()
         else:
             Response.error_message(r)
+
+    def manage_userauth_creds(self):
+        self.return_user_auth_token()
+        if self.user_auth_token_expired():
+            self.user_auth_token_from_refresh_token()
