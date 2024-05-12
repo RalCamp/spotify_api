@@ -57,4 +57,8 @@ class Client():
                 return False
             else:
                 Response.error_message(r)
-    
+
+    def manage_client_creds(self):
+        self.return_client_auth_token()
+        if self.client_token_expired():
+            self.get_client_auth_token()
