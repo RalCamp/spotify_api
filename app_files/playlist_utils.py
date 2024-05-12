@@ -17,11 +17,6 @@ class Playlist():
         self.artist = artist
         self.track = track
 
-    def manage_userauth_creds(self):
-        self.userauth.read_user_auth_token
-        if self.userauth.user_auth_token_expired():
-            self.userauth.user_auth_token_from_refresh_token()
-
     def playlist_exist(self, playlist_id):
         self.client.manage_client_creds()
         hdrs = {
@@ -120,7 +115,7 @@ class Playlist():
         return artists
     
     def create_playlist(self, name, public=False, collaborative=False, description=""):
-        self.manage_userauth_creds()
+        self.userauth.manage_userauth_creds()
         user_id = self.user.get_user_info()["id"]
         user_endpoint = f"https://api.spotify.com/v1/users/{user_id}/playlists"
         hdrs = {
@@ -169,7 +164,7 @@ class Playlist():
         return playlists_json
 
     def edit_playlist_details(self, playlist_id, new_title="", public=None, collaborative=None, description=""):
-        self.manage_userauth_creds()
+        self.userauth.manage_userauth_creds()
         playlist_name = self.get_playlist(playlist_id)['name']
         print(f"Updating details for {playlist_name}...")
         hdrs = {
@@ -193,7 +188,7 @@ class Playlist():
             Response.error_message(r)
     
     def append_tracks_to_playlist(self, playlist_id, uris, duplicates=False):
-        self.manage_userauth_creds()
+        self.userauth.manage_userauth_creds()
         hdrs = {
             "Authorization": f"Bearer {self.userauth.return_user_auth_token()}",
             "Content-Type": "application/json"
@@ -258,7 +253,7 @@ class Playlist():
                     print("Tracks added\n")
 
     def remove_tracks_from_playlist(self, playlist_id, tracks_to_remove):
-        self.manage_userauth_creds()
+        self.userauth.manage_userauth_creds()
         hdrs = {
             "Authorization": f"Bearer {self.userauth.return_user_auth_token()}",
             "Content-Type": "application/json"
@@ -320,8 +315,8 @@ class Playlist():
             print(f"Tracks removed from {playlist_name}\n")
             
     def find_potential_duplicates(self, playlist_id, check_artists=False):
-        self.manage_userauth_creds()
         self.client.manage_client_creds()
+        self.userauth.manage_userauth_creds()
         if check_artists:
             print("Note that this checks track names and artists only - manual verification is required")
         else:
@@ -499,8 +494,8 @@ class Playlist():
         return playlist_averages
 
     def playlist_of_recommended_tracks(self, playlist_name="", limit=20, market=None, seeds={ 'seed_artists': [], 'seed_genres': [], 'seed_tracks': [] }, audio_features=None):
-        self.manage_userauth_creds()
         self.client.manage_client_creds()
+        self.userauth.manage_userauth_creds()
         if playlist_name == "":
             current_date = datetime.now().strftime("%d/%m/%y")
             playlist_name = f"Recommendations {current_date}"

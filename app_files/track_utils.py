@@ -6,12 +6,6 @@ class Track():
         self.client = client
         self.userauth = userauth
 
-
-    def manage_userauth_creds(self):
-        self.userauth.read_user_auth_token
-        if self.userauth.user_auth_token_expired():
-            self.userauth.user_auth_token_from_refresh_token()
-
     def get_track_info(self, track_id):
         self.client.manage_client_creds()
         hdrs = {
@@ -65,7 +59,7 @@ class Track():
                 url += f"{feature}={audio_features[feature]}&"
         if url[-1] == "&":
             url = url[0:(len(url)-1)]
-        self.manage_userauth_creds()
+        self.userauth.manage_userauth_creds()
         hdrs = {
             "Authorization": f"Bearer {self.userauth.return_user_auth_token()}"
         }

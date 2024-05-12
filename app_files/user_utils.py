@@ -14,7 +14,7 @@ class User():
             self.userauth.user_auth_token_from_refresh_token()
 
     def get_user_info(self):
-        self.manage_userauth_creds()
+        self.userauth.manage_userauth_creds()
         hdrs = {
             "Authorization": f"Bearer {self.userauth.return_user_auth_token()}",
             "scope": "user-read-private"
@@ -33,7 +33,7 @@ class User():
             return
         elif time_range == '':
             time_range = 'medium_term'
-        self.manage_userauth_creds()
+        self.userauth.manage_userauth_creds()
         hdrs = {
             "Authorization": f"Bearer {self.userauth.return_user_auth_token()}",
             "scope": "user-top-read"
@@ -77,7 +77,7 @@ class User():
             return
         elif time_range == '':
             time_range = 'medium_term'
-        self.manage_userauth_creds()
+        self.userauth.manage_userauth_creds()
         hdrs = {
             "Authorization": f"Bearer {self.userauth.return_user_auth_token()}",
             "scope": "user-top-read"
@@ -116,7 +116,7 @@ class User():
         return ranked
     
     def get_user_playlists(self, user_owned_only=True, print_results=False):
-        self.manage_userauth_creds()
+        self.userauth.manage_userauth_creds()
         uri_list = []
         playlist_dict = {}
         hdrs = {
