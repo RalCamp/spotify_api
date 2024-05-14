@@ -8,11 +8,6 @@ class User():
         self.user_id = user_id
         self.userauth = userauth
 
-    def manage_userauth_creds(self):
-        self.userauth.read_user_auth_token
-        if self.userauth.user_auth_token_expired():
-            self.userauth.user_auth_token_from_refresh_token()
-
     def get_user_info(self):
         self.userauth.manage_userauth_creds()
         hdrs = {
