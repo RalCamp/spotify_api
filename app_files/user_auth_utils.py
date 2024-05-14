@@ -72,24 +72,6 @@ class UserAuth():
             return r.json()
         else:
             Response.error_message()
-        
-    def get_user_refresh_token(self):
-        encoded_credentials = base64.b64encode(self.client_id.encode() + b':' + self.client_secret.encode()).decode("utf-8")
-        prms = {
-            "grant_type": "refresh_token",
-            "refresh_token": self.user_refresh_token
-        }
-        hdrs = {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": encoded_credentials
-        }
-        r = requests.post("https://accounts.spotify.com/api/token", params=prms, headers=hdrs)
-        if Response.request_successful(r):
-            self.user_refresh_token = r.json()['refresh_token']
-            self.write_user_refresh_token()
-            return r.json()
-        else:
-            Response.error_message()
 
     def user_auth_token_from_refresh_token(self):
         self.read_user_refresh_token()
