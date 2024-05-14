@@ -21,10 +21,14 @@ class SpotifyApp():
         self.user_auth_token = user_auth_token
         self.user_refresh_token = user_refresh_token
 
+        print("Initialising app...")
+
         if not os.path.isdir("app_files/app_info"):
+            print("Creating app_info directory...")
             os.mkdir("app_files/app_info")
 
         if not os.path.isfile(f"app_files/app_info/{self.app_name}.json"):
+            print("Creating app data...")
             with open(f"app_files/app_info/{self.app_name}.json", 'w') as file:
                 template = { 
                     "client_id": self.client_id, 
@@ -38,6 +42,7 @@ class SpotifyApp():
                 json_object = json.dumps(template, indent=4)
                 file.write(json_object)
         else:
+            print("Reading app data...")
             with open(f"app_files/app_info/{self.app_name}.json", 'r') as file:
                 read_dict = json.loads(file.read())
             write_dict = { "client_id": self.client_id, "client_secret": self.client_secret, "client_auth_token": self.client_auth_token, "user_id": self.user_id, "user_auth_code": self.user_auth_code, "user_auth_token": self.user_auth_token}
@@ -51,11 +56,14 @@ class SpotifyApp():
                 file.write(write_json)
 
         if self.user_id == "":
+            print("Reading user id...")
             with open(f"app_files/app_info/{self.app_name}.json", 'r') as file:
                 read_dict = json.loads(file.read())
             if read_dict['user_id'] != "":
                 self.user_id = read_dict['user_id']
 
+        print("Initialising sub-classes...")
+        
         self.client_utils = Client(self.app_name, self.client_id, self.client_secret, self.client_auth_token)
         self.user_auth_utils = UserAuth(self.app_name, self.user_auth_token, self.user_refresh_token, self.client_id, self.client_secret)
         self.user_utils = User(self.user_id, self.user_auth_utils)
