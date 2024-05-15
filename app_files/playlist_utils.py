@@ -566,18 +566,12 @@ class Playlist():
         
     def filter_playlist_by_audio_features(self, playlist_id, audio_features, make_playlist=False):
         tracks = self.get_playlist_track_audio_features(playlist_id)
-        print(tracks)
         playlist_name = self.get_playlist(playlist_id)['name']
         filtered_tracks = []
         print("Filtering tracks...")
         for key in tracks.keys():
-            print("#######################################################################")
-            print(key)
-            print(tracks[key])
             track = tracks[key]
             for feature in audio_features.keys():
-                print("####################################")
-                print(feature)
                 if "min" not in audio_features[feature].keys():
                     if track[feature] < audio_features[feature]["max"]:
                         filtered_tracks.append(track["id"])
