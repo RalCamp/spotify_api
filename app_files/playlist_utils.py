@@ -564,3 +564,37 @@ class Playlist():
         else:
             return self.track.get_recommendations(100, None, seeds, audio_features)
         
+    def filter_playlist_by_audio_features(self, playlist_id, audio_features, make_playlist=False):
+        tracks = self.get_playlist_track_audio_features(playlist_id)
+        print(tracks)
+        playlist_name = self.get_playlist(playlist_id)['name']
+        filtered_tracks = []
+        print("Filtering tracks...")
+        for key in tracks.keys():
+            print("#######################################################################")
+            print(key)
+            print(tracks[key])
+            track = tracks[key]
+            for feature in audio_features.keys():
+                print("####################################")
+                print(feature)
+                if "min" not in audio_features[feature].keys():
+                    if track[feature] < audio_features[feature]["max"]:
+                        filtered_tracks.append(track["id"])
+                elif "max" not in audio_features[feature].keys():
+                    if track[feature] > audio_features[feature]["min"]:
+                        filtered_tracks.append(track["id"])
+                else:
+                    if track[feature] > audio_features[feature]["min"] and track[feature] < audio_features[feature]["max"]:
+                        filtered_tracks.append(track["id"])
+        if filtered_tracks == []:
+            print("There do not appear to be any tracks in this playlist that are within the provided parameters")
+            return None
+        else:
+            if make_playlist:
+                print("")
+                new_playlist_id = self.create_playlist(f"{playlist_name} Filtered", description=str(audio_features))["id"]
+                self.append_tracks_to_playlist(new_playlist_id, filtered_tracks)
+            else:
+                return filtered_tracks
+            
