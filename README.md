@@ -84,6 +84,8 @@ Checks the validity of the current client auth token and requests a new on if th
 
 ## user_auth_utils
 
+Handles actions related to user authorisation, specifically `user_auth_token` and `user_refresh_token`. The `UserAuth` class takes the following arguments: `app_name`, `user_auth_token`, `user_refresh_token`, `client_id` and `client_secret`.
+
 ### read_user_auth_token()
 
 ### read_user_refresh_token()
