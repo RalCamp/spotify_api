@@ -48,23 +48,39 @@ The `Spotify_App` class takes the following arguments:
 
 ## response_utils
 
-### request_successful()
+Handles responses to http requests, using the python `requests` package.
 
-### error_message()
+### request_successful(response_object)
+
+Determines whether or not a request has been successful.
+
+### error_message(response_object)
+
+Provides the status code and additional information about the response object in the case of a request failure.
 
 ## client_utils
 
+Handles actions related to client authorisation. The `Client` class takes the following arguments: `app_name`, `client_id`, `client_secret` and `client_auth_token`.
+
 ### read_client_auth_token()
+
+Reads the client authorisation token from the app's .json file and uses it to update the value of `self.client_auth_token`.
 
 ### write_client_auth_token()
 
+Writes the current value of `self.client_auth_token` to the app's .json file.
+
 ### get_client_auth_token()
 
-### return_client_auth_token()
+Retrieves `client_auth_token` from Spotify, and writes it to the app's .json file.
 
 ### client_token_expired()
 
+Uses a request to one of the example playlists in the Spotify API documentation to check whether or not the client auth token in the app's .json file is valid or not.
+
 ### manage_client_creds()
+
+Checks the validity of the current client auth token and requests a new on if the current one has expired.
 
 ## user_auth_utils
 
