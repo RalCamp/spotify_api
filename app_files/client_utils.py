@@ -36,6 +36,10 @@ class Client():
             return r.json()
         else:
             Response.error_message(r)
+    
+    def return_client_auth_token(self):
+        self.read_client_auth_token()
+        return self.client_auth_token
 
     def client_token_expired(self):
         self.read_client_auth_token()
@@ -55,5 +59,6 @@ class Client():
                 Response.error_message(r)
 
     def manage_client_creds(self):
+        self.return_client_auth_token()
         if self.client_token_expired():
             self.get_client_auth_token()
