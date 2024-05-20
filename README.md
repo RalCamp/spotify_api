@@ -74,6 +74,10 @@ Writes the current value of `self.client_auth_token` to the app's .json file.
 
 Retrieves `client_auth_token` from Spotify, and writes it to the app's .json file.
 
+### return_client_auth_token()
+
+Returns the client authorisation token. Used in [playlist_utils](#playlist_utils).
+
 ### client_token_expired()
 
 Uses a request to one of the example playlists in the Spotify API documentation to check whether or not the client auth token in the app's .json file is valid or not.
