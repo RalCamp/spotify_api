@@ -41,7 +41,7 @@ class User():
         while artists["next"] != None:
             for artist in artists['items']:
                 top_artists.append(artist)
-            time.sleep(1)
+            time.sleep(0.5)
             r = requests.get(artists["next"], headers=hdrs)
             if not Response.request_successful(r):
                 Response.error_message(r)  
@@ -84,7 +84,7 @@ class User():
         while tracks["next"] != None:
             for track in tracks['items']:
                 top_tracks.append(track)
-            time.sleep(1)
+            time.sleep(0.5)
             r = requests.get(tracks["next"], headers=hdrs)
             if not Response.request_successful(r):
                 Response.error_message(r)  
@@ -130,7 +130,7 @@ class User():
                 else:
                     uri_list.append(playlist['id'])
                     playlist_dict[playlist['name']] = playlist['id']
-            time.sleep(1)
+            time.sleep(0.5)
             r = requests.get(playlists["next"], headers=hdrs)
             if not Response.request_successful(r):
                 Response.error_message(r)  
