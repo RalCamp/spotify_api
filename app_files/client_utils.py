@@ -61,4 +61,6 @@ class Client():
     def manage_client_creds(self):
         self.return_client_auth_token()
         if self.client_token_expired():
+            print("The current client authorisation token has expired")
+            print("Requesting a new token...")
             self.get_client_auth_token()

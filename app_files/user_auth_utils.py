@@ -95,4 +95,6 @@ class UserAuth():
     def manage_userauth_creds(self):
         self.return_user_auth_token()
         if self.user_auth_token_expired():
+            print("The current user authorisation token has expired")
+            print("Requesting a new token...")
             self.user_auth_token_from_refresh_token()
