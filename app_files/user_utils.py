@@ -27,6 +27,7 @@ class User():
             print("##############################################################################################\n")
             return
         self.userauth.manage_userauth_creds()
+        print("Getting user's top artists...")
         hdrs = {
             "Authorization": f"Bearer {self.userauth.return_user_auth_token()}",
             "scope": "user-top-read"
@@ -69,6 +70,7 @@ class User():
             print("##############################################################################################\n")
             return
         self.userauth.manage_userauth_creds()
+        print("Getting user's top tracks...")
         hdrs = {
             "Authorization": f"Bearer {self.userauth.return_user_auth_token()}",
             "scope": "user-top-read"
@@ -107,6 +109,7 @@ class User():
         return ranked
     
     def get_user_playlists(self, user_owned_only=True, print_results=False):
+        print("Getting user's playlists...")
         self.userauth.manage_userauth_creds()
         uri_list = []
         playlist_dict = {}
