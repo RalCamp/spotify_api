@@ -92,21 +92,39 @@ Handles actions related to user authorisation, specifically `user_auth_token` an
 
 ### read_user_auth_token()
 
+Reads the user authorisation token from the app's .json file and uses it to update the value of `self.user_auth_token`.
+
 ### read_user_refresh_token()
+
+Reads the user refresh token from the app's .json file and uses it to update the value of `self.user_refresh_token`.
 
 ### write_user_auth_token()
 
+Writes the current value of `self.user_auth_token` to the app's .json file.
+
 ### write_user_refresh_token()
+
+Writes the current value of `self.user_refresh_token` to the app's .json file.
 
 ### return_user_auth_token()
 
+Returns the current user authorisation token.
+
 ### user_auth_token_expired()
+
+Uses a request to <https://api.spotify.com/v1/me> to determine whether or not the current user authorisation token has expired.
 
 ### get_user_refresh_token()
 
+Requests a new user refresh token from the API.
+
 ### user_auth_token_from_refresh_token()
 
+Uses the user refresh token to request a new user authorisation token.
+
 ### manage_userauth_creds()
+
+Checks the validity of the current user authorisation token, and requests a new one if it has expired.
 
 ## user_utils
 
