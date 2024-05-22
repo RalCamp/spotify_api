@@ -26,8 +26,6 @@ class User():
             print("time_range must be one of: long_term (~1 year), medium_term (~6 months), short_term (~4 weeks)")
             print("##############################################################################################\n")
             return
-        elif time_range == '':
-            time_range = 'medium_term'
         self.userauth.manage_userauth_creds()
         hdrs = {
             "Authorization": f"Bearer {self.userauth.return_user_auth_token()}",
@@ -70,8 +68,6 @@ class User():
             print("time_range must be one of: long_term (~1 year), medium_term (~6 months), short_term (~4 weeks)")
             print("##############################################################################################\n")
             return
-        elif time_range == '':
-            time_range = 'medium_term'
         self.userauth.manage_userauth_creds()
         hdrs = {
             "Authorization": f"Bearer {self.userauth.return_user_auth_token()}",
