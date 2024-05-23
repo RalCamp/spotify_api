@@ -174,7 +174,13 @@ More information about the http request that this function uses can be found [he
 
 ## artist_utils
 
-### get_artist()
+Gets information about artists. The `Artist` class takes an instance of the `Client` object as an argument.
+
+### get_artist(artist_id)
+
+Returns a .json containing information about the artist, such as the artist's name, what genres they are associated with and how many followers they have.
+
+More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-an-artist).
 
 ## track_utils
 
