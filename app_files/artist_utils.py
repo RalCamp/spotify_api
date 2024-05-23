@@ -11,6 +11,7 @@ class Artist():
         hdrs = {
             "Authorization": f"Bearer {self.client.client_auth_token}"
         }
+        print("Retrieving artist infromation...")
         r = requests.get(f"https://api.spotify.com/v1/artists/{artist_id}", headers=hdrs)
         if Response.request_successful(r):
             return r.json()
