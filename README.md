@@ -38,7 +38,7 @@ The `Spotify_App` class takes the following arguments:
 
 - `client_auth_token` (optional, default value = ""): The authorisation token for your app, acquired and managed via [client_utils](#client_utils) functions.
 
-- `user_id` (optional, default value = ""): The id associated with your user - required for [create_playlist()](#create_playlist) and [get_user_playlists()](#get_user_playlists). This id is not currently recovered automatically, but can be found using [get_user_info()](#get_user_info).
+- `user_id` (optional, default value = ""): The id associated with your user - required for [create_playlist()](#create_playlist) and [get_user_playlists()](#get_user_playlistsuser_owned_onlytrue-print_resultsfalse). This id is not currently recovered automatically, but can be found using [get_user_info()](#get_user_info).
 
 - `user_auth_code` (optional, default value = ""): This argument currently serves no purpose - it will become necessary should user authentication be handled by this app (as opposed to ocurring via postman).
 
