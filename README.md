@@ -132,7 +132,7 @@ Gets information about the current user, including user id, top tracks and top a
 
 ### get_user_info()
 
-Returns a .json containing information about the current user including display name, id, and information about followers. More information can be returned by increasing the [scope granted to the app by the user](#user-authentication-via-postman). More information about the http request that this function uses cn be found [here](https://developer.spotify.com/documentation/web-api/reference/get-current-users-profile).
+Returns a .json containing information about the current user including display name, id, and information about followers. More information can be returned by increasing the [scope granted to the app by the user](#user-authentication-via-postman). More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-current-users-profile).
 
 ### get_user_top_artists(time_range)
 
@@ -144,7 +144,7 @@ Returns a .json of the user's top artists within a given time range. The accepte
 
 - `'short_term'`: ~4 weeks
 
-More information about the http request that this function uses cn be found [here](https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks). Note that while the 'default' request can only return a maximum of 50 items at a time, the function is written to retun *all* items.
+More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks). Note that while the 'default' request can only return a maximum of 50 items at a time, the function is written to retun *all* items.
 
 ### user_top_artists_ranked(time_range, print_results=False)
 
@@ -160,7 +160,7 @@ Returns a .json of the user's top tracks within a given time range. The accepted
 
 - `'short_term'`: ~4 weeks
 
-More information about the http request that this function uses cn be found [here](https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks). Note that while the 'default' request can only return a maximum of 50 items at a time, the function is written to retun *all* items.
+More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks). Note that while the 'default' request can only return a maximum of 50 items at a time, the function is written to retun *all* items.
 
 ### user_top_tracks_ranked(time_range, print_results=False, range=0)
 
@@ -170,7 +170,7 @@ Uses [get_user_top_tracks()](#get_user_top_trackstime_range) to generate a dicti
 
 Returns a dictionary of the uris and names of the playlists in the user's library. The default value of `user_owned_only` will cause the function to only return playlists that the user owns - this can be expanded to all playlists in the user's library by setting `user_owned_only` to `True`.
 
-More information about the http request that this function uses cn be found [here](https://developer.spotify.com/documentation/web-api/reference/get-list-users-playlists). Note that while the 'default' request can only return a maximum of 50 items at a time, the function is written to retun *all* items.
+More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-list-users-playlists). Note that while the 'default' request can only return a maximum of 50 items at a time, the function is written to retun *all* items.
 
 ## artist_utils
 
