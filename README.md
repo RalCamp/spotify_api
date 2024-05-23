@@ -184,9 +184,43 @@ More information about the http request that this function uses can be found [he
 
 ## track_utils
 
-### get_track_info()
+Gets information about tracks, inclding audio features and analysis, as well as generating recommendations. The `Track` class takes instances of the `Client` and `UserAuth` classes as arguments.
+
+### get_track_info(track_id)
+
+Returns a .json containing information about the track, including album/artist information, track name, track duration and track popularity.
+
+More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-track).
 
 ### get_audio_features()
+
+Returns a .json containing a track's audio features. The features measured are as follows:
+
+- **acousticness:** A measure of confidence in the track being acoustic. `1.0` indicates a high confidence.
+
+- **danceability:** A measure of how suitable the track is for dancing. `1.0` is the most danceable.
+
+- **duration_ms:** The duration of the track in milliseconds.
+
+- **energy:** A measure of how "intense" and "active" a track is percieved to be. `1.0` indicates a very high energy.
+
+- **instrumentalness:** A measure of confidence in whether or not the track contains vocal content. A track can be considered instrumental if its instrumentalness is greater than `0.5`, with higher values indicating a greater confidence that the track is instrumental.
+
+- **key:** The key the track is in. `0` is C and each successive integer represents the next semitone up. Returns `-1` if a key cannot be identified.
+
+- **liveness:** A measure of confidence in whether or not the track was performed live. Tracks with a liveness of `0.8` or more can be considered to have been performed live.
+
+- **loudness:** The average loudness of a track in decibels.
+
+- **mode:** Indicates whether the track is in a major (`1.0`) or minor (`0`) key.
+
+- **speechiness:** A measure of how much of the track is spoken word. Values greater than `0.66` indicate that a track is likely entirely spoken word and values below `0.33` indicate that a track contains mostly music or other non-speech sounds.
+
+- **tempo:** The estimated tempo of the track in BPM.
+
+- **time_signature:** The estimated time signature of the track. Ranges from `3` (3/4) to `7` (7/4).
+
+More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-audio-features).
 
 ### get_audio_analysis()
 
