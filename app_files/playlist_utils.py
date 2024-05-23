@@ -501,6 +501,11 @@ class Playlist():
             playlist_name = f"Recommendations {current_date}"
         print("Getting recommendations...")
         recs = self.track.get_recommendations(limit, market, seeds, audio_features)
+        if recs == None:
+            print("#######################################################################")
+            print("Spotify cannot generate any recommendations from the parameters provided")
+            print("#######################################################################")
+            return
         to_add = []
         for track in recs["tracks"]:
             to_add.append(track['id'])
@@ -547,7 +552,16 @@ class Playlist():
                 if track['id'] not in tracks.keys():
                     tracks[track['id']] = track['popularity']
             tracks_sorted = [*dict(sorted(tracks.items(), key=lambda item: item[1]))][::-1]
-            seeds['seed_tracks'] = tracks_sorted[0:5]
+            if len(tracks_sorted) <= 5:
+                seeds['seed_tracks'] = tracks_sorted
+            else:
+                seeds['seed_tracks'] = tracks_sorted[0:5]
+        else:
+            print("################################")
+            print("ERROR - incorrect value for seed")
+            print("seed must be one of:\n- artists\n- genres\n- tracks")
+            print("################################")
+            return
         if use_audio_features:
             average_audio_features = self.get_average_playlist_audio_features(playlist_id)
             audio_features = {}
