@@ -192,7 +192,7 @@ Returns a .json containing information about the track, including album/artist i
 
 More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-track).
 
-### get_audio_features()
+### get_audio_features(track_id)
 
 Returns a .json containing a track's audio features. The features measured are as follows:
 
@@ -222,9 +222,39 @@ Returns a .json containing a track's audio features. The features measured are a
 
 More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-audio-features).
 
-### get_audio_analysis()
+### get_audio_analysis(track_id)
 
-### get_recommendations()
+Returns a .json contatining a low-level audio analysis of the track, including attempts to calculate position and length of track subdivisions. This function returns a large volume of data which is broadly split into the following categories:
+
+- **metadata:** This includes information such as the timestamp of the analysis and the version of the analyser used.
+
+- **track:** Information about the track as a whole, including the number of samples, loudness, tempo and key.
+
+- **bars:** An array of objects containing the start and duration of each bar, along with a confidence measure for those values.
+
+- **beats:** An array of objects containing the start and duration of each beat, along with a confidence measure for those values.
+
+- **sections:** An array of objects for each distinct section in the track including information on duration, loudness, key, mode and time signature.
+
+- **segments:** An array of objects representing sections of the track that have a roughly consistent sound throughout including information on duration, loudness, timbre and the prevalence of certain pitches.
+
+- **tatums:** As the onomatopoeia suggests, a tatum is the slowest pulse inferred by a listener. This key is an array of each tatum with information about its duration.
+
+More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-audio-analysis).
+
+### get_recommendations(limit=20, market=None, seeds={ 'seed_artists': [], 'seed_genres': [], 'seed_tracks': [] }, audio_features=None)
+
+Returns a .json of recommended tracks based on seeds, along with the option to further restirct results by audio values. A maximum of 5 seeds can be provided in any combination, but at least 1 seed **must** be provided. The format of each argument is as folows
+
+- **limit:** *integer* - the target number of recommended tracks. Note that it may not be possible to return the requested number of recommended tracks.
+
+- **market:** *string* - a [two letter country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) for the market the returned tracks are available in. Defaults to the user's market if left unspecified.
+
+- **seeds:** *dictionary* - the seeds for track recommendation. The values of `seed_artists` and `seed_tracks` are an array of uris, while `seed_genres` is an array of genres.
+
+- **audio_features:** *dictionary* - optional minimum, maximum and target audio feature values to restrict results by. Keys are any of the features discussed in [get_audio_features()](#get_audio_featurestrack_id) prefaced with either `min_`, `max_`, or `target_`.
+
+More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-recommendations).
 
 ## playlist_utils
 
