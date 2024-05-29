@@ -33,6 +33,7 @@ class Client():
         if Response.request_successful(r):
             self.client_auth_token = r.json()['access_token']
             self.write_client_auth_token()
+            print("Client token acquired")
             return r.json()
         else:
             Response.error_message(r)

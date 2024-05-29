@@ -71,3 +71,5 @@ class SpotifyApp():
         self.track_utils = Track(self.client_utils, self.user_auth_utils)
         self.playlist_utils = Playlist(self.app_name, self.client_utils, self.user_auth_utils, self.user_utils, self.artist_utils, self.track_utils)
         self.custom_utils = Custom(self.playlist_utils)
+
+        print("App initialised")
