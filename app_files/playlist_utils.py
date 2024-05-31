@@ -163,7 +163,7 @@ class Playlist():
             file.write(playlists_json)
         return playlists_json
 
-    def edit_playlist_details(self, playlist_id, new_title="", public=None, collaborative=None, description=""):
+    def edit_playlist_details(self, playlist_id, new_title=None, public=None, collaborative=None, description=None):
         self.userauth.manage_userauth_creds()
         playlist_name = self.get_playlist(playlist_id)['name']
         print(f"Updating details for {playlist_name}...")
@@ -172,13 +172,13 @@ class Playlist():
             "Content-Type": "application/json"
         }
         payload_dict = {}
-        if new_title != "":
+        if new_title != None:
             payload_dict['name'] = new_title
         if public != None:
             payload_dict['public'] = public
         if collaborative != None:
             payload_dict['collaborative'] = collaborative
-        if description != "":
+        if description != None:
             payload_dict['description'] = description
         payload = json.dumps(payload_dict)
         r = requests.put(f"https://api.spotify.com/v1/playlists/{playlist_id}", headers=hdrs, data=payload)
