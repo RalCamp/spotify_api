@@ -2,6 +2,67 @@
 
 Please note that this is **only intended for personal use** with a personal instance of a Spotify app (see [Creating an App](#creating-an-app)). The current method of storing client/user secrets and auth tokens is **not secure**.
 
+## Contents
+
+- [Setup](#setup)
+  - [Creating an App](#creating-an-app)
+  - [User Authentication via Postman](#user-authentication-via-postman)
+  - [App Initialisation](#app-initialisation)
+- [response_utils](#response_utils)
+  - [request_successful()](#request_successfulresponse_object)
+  - [error_message()](#error_messageresponse_object)
+- [client_utils](#client_utils)
+  - [read_client_auth_token()](#read_client_auth_token)
+  - [write_client_auth_token()](#write_client_auth_token)
+  - [get_client_auth_token()](#get_client_auth_token)
+  - [return_client_auth_token()](#return_client_auth_token)
+  - [client_token_expired()](#client_token_expired)
+  - [manage_client_creds()](#manage_client_creds)
+- [user_auth_utils](#user_auth_utils)
+  - [read_user_auth_token()](#read_user_auth_token)
+  - [read_user_refresh_token()](#read_user_refresh_token)
+  - [write_user_auth_token()](#write_user_auth_token)
+  - [write_user_refresh_token()](#write_user_refresh_token)
+  - [return_user_auth_token()](#return_user_auth_token)
+  - [user_auth_token_expired()](#user_auth_token_expired)
+  - [get_user_refresh_token()](#get_user_refresh_token)
+  - [user_auth_token_from_refresh_token()](#user_auth_token_from_refresh_token)
+  - [manage_userauth_creds()](#manage_userauth_creds)
+- [user_utils](#user_utils)
+  - [get_user_info()](#get_user_info)
+  - [get_user_top_artists()](#get_user_top_artiststime_range)
+  - [user_top_artists_ranked()](#user_top_artists_rankedtime_range-print_resultsfalse)
+  - [get_user_top_tracks()](#get_user_top_trackstime_range)
+  - [user_top_tracks_ranked()](#user_top_tracks_rankedtime_range-print_resultsfalse-range0)
+  - [get_user_playlists()](#get_user_playlistsuser_owned_onlytrue-print_resultsfalse)
+- [artist_utils](#artist_utils)
+  - [get_artist()](#get_artistartist_id)
+- [track_utils](#track_utils)
+  - [get_track_info()](#get_track_infotrack_id)
+  - [get_audio_features()](#get_audio_featurestrack_id)
+  - [get_audio_analysis()](#get_audio_analysistrack_id)
+  - [get_recommendations()](#get_recommendationslimit20-marketnone-seeds-seed_artists--seed_genres--seed_tracks---audio_featuresnone)
+- [playlist_utils](#playlist_utils)
+  - [playlist_exist()](#playlist_existplaylist_id)
+  - [get_playlist()](#get_playlistplaylist_id)
+  - [get_playlist_tracks()](#get_playlist_tracksplaylist_id)
+  - [get_playlist_track_uris()](#get_playlist_track_urisplaylist_id)
+  - [get_playlist_artists()](#get_playlist_artistsplaylist_id-unique_artiststrue)
+  - [create_playlist()](#create_playlistname-publicfalse-collaborativefalse-description)
+  - [created_playlist_cleanup()](#created_playlist_cleanup)
+  - [edit_playlist_details()](#edit_playlist_detailsplaylist_id-new_titlenone-publicnone-collaborativenone-descriptionnone)
+  - [append_tracks_to_playlist()](#append_tracks_to_playlistplaylist_id-uris-duplicatesfalse)
+  - [remove_tracks_from_playlist()](#remove_tracks_from_playlistplaylist_id-tracks_to_remove)
+  - [find_potential_duplicates()](#find_potential_duplicatesplaylist_id-check_artistsfalse)
+  - [append_playlists_to_playlist()](#append_playlists_to_playlistplaylist-playlists_to_append-duplicatesfalse-log_added_tracksfalse)
+  - [combine_playlists()](#combine_playlistsplaylists-current_playlist-create_new_playlistfalse)
+  - [get_playlist_track_audio_features()](#get_playlist_track_audio_featuresplaylist_id)
+  - [get_playlist_audio_features()](#get_playlist_audio_featuresplaylist_id)
+  - [get_average_playlist_audio_features()](#get_average_playlist_audio_featuresplaylist_id)
+  - [playlist_of_recommended_tracks()](#playlist_of_recommended_tracksplaylist_name-limit20-marketnone-seeds-seed_artists--seed_genres--seed_tracks---audio_featuresnone)
+  - [recommend_tracks_from_playlist()](#recommend_tracks_from_playlistplaylist_id-seed-use_audio_featuresfalse-use_min_maxfalse-create_playlistfalse)
+  - [filter_playlist_by_audio_features()](#filter_playlist_by_audio_featuresplaylist_id-audio_features-make_playlistfalse)
+
 ## Setup
 
 ### Creating an App
@@ -38,7 +99,7 @@ The `Spotify_App` class takes the following arguments:
 
 - `client_auth_token` (optional, default value = ""): The authorisation token for your app, acquired and managed via [client_utils](#client_utils) functions.
 
-- `user_id` (optional, default value = ""): The id associated with your user - required for [create_playlist()](#create_playlist) and [get_user_playlists()](#get_user_playlistsuser_owned_onlytrue-print_resultsfalse). This id is not currently recovered automatically, but can be found using [get_user_info()](#get_user_info).
+- `user_id` (optional, default value = ""): The id associated with your user - required for [create_playlist()](#create_playlistname-publicfalse-collaborativefalse-description) and [get_user_playlists()](#get_user_playlistsuser_owned_onlytrue-print_resultsfalse). This id is not currently recovered automatically, but can be found using [get_user_info()](#get_user_info).
 
 - `user_auth_code` (optional, default value = ""): This argument currently serves no purpose - it will become necessary should user authentication be handled by this app (as opposed to ocurring via postman).
 
