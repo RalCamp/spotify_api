@@ -258,38 +258,134 @@ More information about the http request that this function uses can be found [he
 
 ## playlist_utils
 
-### playlist_exist()
+Handles operations related to playlists including getting playlist information, adding and removing tracks from playlists, creating playlists, editing playlist information and generating recommendations from a playlist. The `Playlist` class takes `app_name` as an argument, along with instances of the `Client`, `UserAuth`, `User`, `Artist` and `Track` classes.
 
-### get_playlist()
+### playlist_exist(playlist_id)
 
-### get_playlist_tracks()
+Checks to see whether a playlist with the given id exists. Returns `True` or `False` as appropriate.
 
-### get_playlist_track_uris()
+### get_playlist(playlist_id)
 
-### get_playlist_artists()
+Returns a .json containing the information about the given playlist, including:
 
-### create_playlist()
+- **collaborative:** `true` if the playlist is collaborative, `false` if not.
+
+- **description:** The playlist's description.
+
+- **followers:** The number of followers the playlist has.
+
+- **id:** The playlist's Spotify id.
+
+- **images:** Information about the images associated with the playlist.
+
+- **name:** The playlst's name.
+
+- **owner:** Information about the playlist's owner, including id, uri, and display name.
+
+- **public:** `true` if the playlist is public, `false` if not, `null` if the status is not relevant.
+
+- **tracks:** Information about the playlist tracks. Note that the get_playlist() function only returns the first page of results - [get_playlist_tracks()](#get_playlist_tracksplaylist_id) should be used to get information about all tracks in a playlist.
+
+More information about the http request that this function uses can be found [here](https://developer.spotify.com/documentation/web-api/reference/get-playlist).
+
+### get_playlist_tracks(playlist_id)
+
+Returns an array of dictionaries for each track in the playlist. Each dictionary has the following keys:
+
+- **name:** The track's name.
+
+- **id:** The track's Spotify id
+
+- **artists:** The track's artists
+
+- **album:** The album the specific track comes from
+
+- **popularity:** The track's popularity
+
+### get_playlist_track_uris(playlist_id)
+
+Returns an array of the track ids for a given playlist.
+
+### get_playlist_artists(playlist_id, unique_artists=True)
+
+Returns an array of the ids of all the artists on the playlist. Filters out duplicate ids if unique_artists is set to `True`.
+
+### create_playlist(name, public=False, collaborative=False, description="")
+
+Creates a playlist with the provided settings and information and returns the same information about the playlist as [get_playlist()](#get_playlistplaylist_id), and stores the playlist id and name in `/app_info/created_playlists_$name.json`.
 
 ### created_playlist_cleanup()
 
-### edit_playlist_details()
+Checks each of the ids in `/app_info/created_playlists_$name.json` and removes it from the file if there is no longer a playlist associated with that id.
 
-### append_tracks_to_playlist()
+### edit_playlist_details(playlist_id, new_title=None, public=None, collaborative=None, description=None)
 
-### remove_tracks_from_playlist()
+Edits the playlist's details, if provided.
 
-### find_potential_duplicates()
+### append_tracks_to_playlist(playlist_id, uris, duplicates=False)
 
-### append_playlists_to_playlist()
+Appends the tracks in the supplied array to the end of a given playlist. When duplicates is set to `False` all duplicate tracks will be stripped from the supplied array and a track will not be added if it already exists in the target playlist.
 
-### combine_playlists()
+### remove_tracks_from_playlist(playlist_id, tracks_to_remove)
 
-### get_playlist_track_audio_features()
+Checks each track in the supplied array of track uris against the target playlist and deletes that track if it exists.
 
-### get_playlist_audio_features()
+### find_potential_duplicates(playlist_id, check_artists=False)
 
-### get_average_playlist_audio_features()
+Checks a playlist for duplicate tracks by comparing track names. Setting check_artists to `True` will lead to a track only being flagged if it has the same name *and* artist as another track in the same playlist.
 
-### playlist_of_recommended_tracks()
+### append_playlists_to_playlist(playlist, playlists_to_append, duplicates=False, log_added_tracks=False)
 
-### recommend_tracks_from_playlist()
+Appends tracks in a number of playlists to another playlist. Takes the following arguments:
+
+- **playlist:** *string* The id of the target playlist.
+
+- **playlists_to_append:** *array* An array of playlist ids. Used to generate the tracks that will be added to the target playlist.
+
+- **duplicates:** *boolean* If set to `False` removes duplicate uris from the tracks to be added, and removes tracks that already exist in the target playlist and/or in the .json of previously added tracks (see below).
+
+- **log_added_tracks:** *boolean* If set to `True`, creates/updates a file in the app_info folder called `$playlist_added_tracks.json` which contains an array of tracks that have been added to the target playlist. This array will be checked against the array of tracks to be added if duplicates is set to `False`.
+
+### combine_playlists(playlists, current_playlist, create_new_playlist=False)
+
+Creates/updates a target playlist to be a strict combination of other source playlists (contains only one instance of each song in each source playlist). Updates to the source playlists will be pushed to the target playlist the next time the function runs. NOTE The ability to create a new playlist has not yet been realised for this function.
+
+### get_playlist_track_audio_features(playlist_id)
+
+Returns a dictionary of the tracks in a given playlist. Keys are the track uris and values are a dictionary of that track's [audio_features](#get_playlist_track_audio_featuresplaylist_id).
+
+### get_playlist_audio_features(playlist_id)
+
+Returns a dictionary of Spotify's [audio_features](#get_playlist_track_audio_featuresplaylist_id), where the value of each audio feature is an array of the values of that audio feature for each track.
+
+### get_average_playlist_audio_features(playlist_id)
+
+Returns a dictionary with the mean, median and standard deviation of each of Spotify's [audio_features](#get_playlist_track_audio_featuresplaylist_id).
+
+### playlist_of_recommended_tracks(playlist_name="", limit=20, market=None, seeds={ 'seed_artists': [], 'seed_genres': [], 'seed_tracks': [] }, audio_features=None)
+
+Creates a playlist containing the tracks generates by the [get_recommendations()](#get_recommendationslimit20-marketnone-seeds-seed_artists--seed_genres--seed_tracks---audio_featuresnone) function.
+
+### recommend_tracks_from_playlist(playlist_id, seed, use_audio_features=False, use_min_max=False, create_playlist=False)
+
+Generates a list of recommended tracks based on a pre-existing playlist and optionally creates a new playlist with those tracks. Takes the following arguments:
+
+- **playlist_id:** *string* The id of the source playlist.
+
+- **seed:** *string* One of `artists`, `genres` or `tracks`; determines which seed will be used. `artists` and `genres` will use the 5 most common of the given seed in the source playlist, `tracks` makes use of Spotify's popularity metric to determine the 5 most popular tracks in the source playlist.
+
+- **use_audio_features:** *boolean* If set to `True` the function will pass the mean audio features of the playlist as 'target' features to the [get_recommendations()](#get_recommendationslimit20-marketnone-seeds-seed_artists--seed_genres--seed_tracks---audio_featuresnone) function.
+
+- **use_min_max:** *boolean* If set to `True` the function takes the mean and standard deviation of each audio feature and uses this to generate minimun and maximum values for each audio feature, which it then passes to the [get_recommendations()](#get_recommendationslimit20-marketnone-seeds-seed_artists--seed_genres--seed_tracks---audio_featuresnone) function.
+
+- **create_playlist:** *boolean* If set to `True` the function will create a playlist called `$source_playlist Recommendations` which contains the generated recommendations.
+
+### filter_playlist_by_audio_features(playlist_id, audio_features, make_playlist=False)
+
+Returns a list of tracks from the source playlist that fall within given ranges for the supplied audio features. Takes the following argumentd:
+
+- **playlist_id:** *string* The id of the source playlist.
+
+- **audio_features** *dictionary* A dictionary containing one or more of Spotify's [audio_features](#get_playlist_track_audio_featuresplaylist_id) and its minimum and/or maximum value eg. `{'tempo': {'min': 100, 'max': 180}, 'danceability': {'min': 0.6}}`
+
+- **make_playlist:** *boolean* If set to `True` the function will create a playlist called `$source_playlist Filtered` containing the tracks returned by the function and the description set to the value of audio_features.
