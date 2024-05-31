@@ -155,12 +155,15 @@ class Playlist():
     def created_playlist_cleanup(self):
         with open(f"app_files/app_info/created_playlists_{self.app_name}.json", "r") as file:
             playlists_dict = json.loads(file.read())
+        print(f"Checking the contents of created_playlists_{self.app_name}.json...")
         for id in playlists_dict.keys():
             if not self.playlist_exist(id):
+                print(f"{playlists_dict['id']['name']} no longer exists\nRemoving playlist from created_playlists_{self.app_name}.json...")
                 playlists_dict.pop(id)
         playlists_json = json.dumps(playlists_dict, indent=4)
         with open(f"app_files/app_info/created_playlists_{self.app_name}.json", "w") as file:
             file.write(playlists_json)
+        print(f"The contents of created_playlists_{self.app_name}.json has been updated\n")
         return playlists_json
 
     def edit_playlist_details(self, playlist_id, new_title=None, public=None, collaborative=None, description=None):
