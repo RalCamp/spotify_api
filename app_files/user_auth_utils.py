@@ -88,7 +88,7 @@ class UserAuth():
         if Response.request_successful(r):
             self.user_auth_token = r.json()["access_token"]
             self.write_user_auth_token()
-            print("User authorisation token acquired")
+            print("User authorisation token acquired\n")
             return r.json()
         else:
             Response.error_message(r)
