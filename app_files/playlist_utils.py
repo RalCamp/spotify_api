@@ -588,18 +588,21 @@ class Playlist():
         print("Filtering tracks...")
         for key in tracks.keys():
             track = tracks[key]
+            track_passes = True
             for feature in audio_features.keys():
                 if "min" not in audio_features[feature].keys():
-                    if track[feature] < audio_features[feature]["max"]:
-                        filtered_tracks.append(track["id"])
+                    if track[feature] > audio_features[feature]["max"]:
+                        track_passes = False
                 elif "max" not in audio_features[feature].keys():
-                    if track[feature] > audio_features[feature]["min"]:
-                        filtered_tracks.append(track["id"])
+                    if track[feature] < audio_features[feature]["min"]:
+                        track_passes = False
                 else:
-                    if track[feature] > audio_features[feature]["min"] and track[feature] < audio_features[feature]["max"]:
-                        filtered_tracks.append(track["id"])
+                    if track[feature] < audio_features[feature]["min"] or track[feature] > audio_features[feature]["max"]:
+                        track_passes = False
+            if track_passes:
+                filtered_tracks.append(track['id'])
         if filtered_tracks == []:
-            print("There do not appear to be any tracks in this playlist that are within the provided parameters")
+            print("There do not appear to be any tracks in this playlist that are within the provided parameters\n")
             return None
         else:
             if make_playlist:
