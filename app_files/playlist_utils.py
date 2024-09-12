@@ -462,7 +462,7 @@ class Playlist():
         playlist_track_audio_features = {}
         print(f"Getting audio features for {len(playlist_uris)} tracks from {playlist_name}...")
         for uri in playlist_uris:
-            time.sleep(0.5)
+            time.sleep(1)
             playlist_track_audio_features[uri] = self.track.get_audio_features(uri)
         return playlist_track_audio_features
     
