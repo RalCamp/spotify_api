@@ -505,9 +505,6 @@ class Playlist():
         print("Getting recommendations...")
         recs = self.track.get_recommendations(limit, market, seeds, audio_features)
         if recs == None:
-            print("#######################################################################")
-            print("Spotify cannot generate any recommendations from the parameters provided")
-            print("#######################################################################")
             return
         to_add = []
         for track in recs["tracks"]:
@@ -579,7 +576,11 @@ class Playlist():
             playlist_name = self.get_playlist(playlist_id)['name']
             self.playlist_of_recommended_tracks(playlist_name=f"{playlist_name} Recommendations", limit=100, seeds=seeds, audio_features=audio_features)
         else:
-            return self.track.get_recommendations(100, None, seeds, audio_features)
+            recs = self.track.get_recommendations(100, None, seeds, audio_features)
+            if recs == None:
+                return
+            else:
+                return recs
         
     def filter_playlist_by_audio_features(self, playlist_id, audio_features, make_playlist=False):
         tracks = self.get_playlist_track_audio_features(playlist_id)
