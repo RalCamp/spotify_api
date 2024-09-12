@@ -65,6 +65,12 @@ class Track():
         }
         r = requests.get(url, headers=hdrs)
         if Response.request_successful(r):
-            return r.json()
+            if r.json()["tracks"] == []:
+                print("########################################################################")
+                print("Spotify cannot generate any recommendations from the parameters provided")
+                print("########################################################################")
+                return None
+            else:
+                return r.json()
         else:
             Response.error_message(r)
